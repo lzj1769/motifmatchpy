@@ -28,6 +28,9 @@ suite checks that against a build of it kept in ``reference/``.
 
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _installed_version
+
 from . import io, misc, parsers, scan, tools
 from ._types import Match, MatchWithVariant, Variant
 from .api import Hit, Motif, MotifScanner, read_motif_file, read_motifs
@@ -35,7 +38,10 @@ from .io import read_fasta, read_sequences
 from .scan import Scanner, naive_scan_dna, scan_best_hits_dna, scan_dna
 from .tools import flat_bg, threshold_from_p
 
-__version__ = "0.1.0"
+try:
+    __version__ = _installed_version("motifmatchpy")
+except PackageNotFoundError:  # pragma: no cover - a source tree with no install
+    __version__ = "0.0.0+unknown"
 
 #: The MOODS release these algorithms were ported from.
 MOODS_VERSION = "1.9.4.1"

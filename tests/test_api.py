@@ -285,3 +285,16 @@ def test_scan_fasta_matches_scanning_the_string(sequence_file, dna, pfm_file):
     assert [(h.name, h.pos, h.strand, h.score) for h in from_file] == [
         (h.name, h.pos, h.strand, h.score) for h in direct
     ]
+
+
+# ----------------------------------------------------------------- packaging
+def test_version_comes_from_the_installed_metadata():
+    """__version__ is read from the distribution rather than written out twice,
+    so `motifmatchpy --version` cannot drift from the version that gets
+    published -- which is the one the release workflow triggers on."""
+    import tomllib
+    from pathlib import Path
+
+    pyproject = Path(__file__).resolve().parent.parent / "pyproject.toml"
+    declared = tomllib.loads(pyproject.read_text())["project"]["version"]
+    assert mm.__version__ == declared
