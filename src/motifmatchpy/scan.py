@@ -8,6 +8,7 @@ wrappers that build a scanner for a single call.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from itertools import pairwise
 
 import numpy as np
 
@@ -97,7 +98,7 @@ class Scanner:
 
         self._motifs = [
             build_motif(matrix, bg, self.l, threshold, self.a)
-            for matrix, threshold in zip(matrices, thresholds)
+            for matrix, threshold in zip(matrices, thresholds, strict=True)
         ]
         self._tables = _pack(self._motifs, self.l, self._shift)
 
@@ -430,7 +431,7 @@ def _group(
     edges = np.searchsorted(by_motif, np.arange(n_motifs + 1))
     return [
         list(map(Match, positions[start:stop], scores[start:stop]))
-        for start, stop in zip(edges[:-1], edges[1:])
+        for start, stop in pairwise(edges)
     ]
 
 
@@ -533,7 +534,7 @@ def scan_best_hits_dna(
         pending = [i for i in range(n) if not settled[i]]
         counts = count_at(pending, [current[i] for i in pending])
 
-        for i, hits in zip(pending, counts):
+        for i, hits in zip(pending, counts, strict=True):
             threshold = current[i]
             if target <= hits < mult * target:
                 settled[i] = True

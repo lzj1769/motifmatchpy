@@ -13,7 +13,8 @@ import sys
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
 
-from . import __version__, io as _io, tools
+from . import __version__, tools
+from . import io as _io
 from .api import Hit, Motif, MotifScanner, read_motifs
 
 __all__ = ["main", "build_parser"]
@@ -244,7 +245,7 @@ def _output(path: str | None) -> Iterator:
         yield sys.stdout
         return
     try:
-        handle = open(path, "w")
+        handle = open(path, "w")  # noqa: SIM115 -- closed by this context manager
     except OSError as exc:
         raise UsageError(f"could not open {path} for writing: {exc}") from exc
     try:

@@ -27,7 +27,7 @@ def open_text(filename: str | os.PathLike[str]) -> _io.TextIOBase:
         compressed = probe.read(2) == _GZIP_MAGIC
     if compressed:
         return gzip.open(path, "rt")
-    return open(path, "r")
+    return open(path)
 
 
 def read_fasta(

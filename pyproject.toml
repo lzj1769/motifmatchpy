@@ -35,6 +35,28 @@ motifmatchpy = "motifmatchpy.cli:main"
 module-root = "src"
 module-name = "motifmatchpy"
 
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = [
+    # __all__ is grouped by topic here -- types, then functions, then modules --
+    # which reads better than alphabetical order.
+    "RUF022",
+    # Several if/else blocks carry a comment explaining the branch that a
+    # ternary would have nowhere to put.
+    "SIM108",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# `l` is the scanning window size throughout the MOODS sources these two modules
+# port. Keeping the name makes the Python readable side by side with the C++ it
+# came from, which matters more here than the ambiguity the rule guards against.
+"src/motifmatchpy/_kernels.py" = ["E741"]
+"src/motifmatchpy/_motif.py" = ["E741"]
+
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]

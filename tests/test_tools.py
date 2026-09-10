@@ -59,7 +59,7 @@ def test_log_odds_with_base_rescales(pfm_file, flat4):
     counts = parsers.pfm(pfm_file)
     natural = tools.log_odds(counts, flat4, 0.01)
     base2 = tools.log_odds(counts, flat4, 0.01, log_base=2)
-    for row_n, row_2 in zip(natural, base2):
+    for row_n, row_2 in zip(natural, base2, strict=True):
         assert row_2 == pytest.approx([v / math.log(2) for v in row_n])
 
 

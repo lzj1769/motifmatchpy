@@ -15,7 +15,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import io as _io
-from . import parsers, scan as _scan, tools
+from . import parsers, tools
+from . import scan as _scan
 from ._types import Variant
 
 __all__ = ["Motif", "Hit", "MotifScanner", "read_motifs", "read_motif_file"]
@@ -438,7 +439,9 @@ class MotifScanner:
                 score=match.score,
                 sequence_name=sequence_name,
             )
-            for i, (motif, matches) in enumerate(zip(self._all_motifs, results))
+            for i, (motif, matches) in enumerate(
+                zip(self._all_motifs, results, strict=True)
+            )
             for match in matches
         ]
 
@@ -456,7 +459,7 @@ class MotifScanner:
                         variants=tuple(variants[j] for j in match.variants),
                     )
                     for i, (motif, matches) in enumerate(
-                        zip(self._all_motifs, var_results)
+                        zip(self._all_motifs, var_results, strict=True)
                     )
                     for match in matches
                 ]
@@ -511,7 +514,9 @@ class MotifScanner:
                 score=match.score,
                 sequence_name=sequence_name,
             )
-            for i, (motif, matches) in enumerate(zip(self._all_motifs, results))
+            for i, (motif, matches) in enumerate(
+                zip(self._all_motifs, results, strict=True)
+            )
             for match in matches
         ]
         hits.sort(key=lambda h: (h.pos, h.motif.name, h.strand))

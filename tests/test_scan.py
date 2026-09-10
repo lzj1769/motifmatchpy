@@ -39,7 +39,9 @@ def test_every_example_matrix_agrees_with_brute_force(dna, pfm_files, flat4):
     thresholds = [tools.threshold_from_p(m, flat4, 1e-2) for m in matrices]
     results = scan.scan_dna(sample, matrices, flat4, thresholds)
     assert len(results) == len(matrices)
-    for path, matrix, threshold, found in zip(pfm_files, matrices, thresholds, results):
+    for path, matrix, threshold, found in zip(
+        pfm_files, matrices, thresholds, results, strict=True
+    ):
         expected = reference.brute_force_scan(sample, matrix, threshold)
         assert as_pairs(found) == rounded(expected), f"mismatch for {path.name}"
 
@@ -241,7 +243,11 @@ def test_scanner_matches_the_one_shot_function(sample, pfm_files, flat4):
     scanner.set_motifs(matrices, flat4, thresholds)
     assert len(scanner) == scanner.size() == len(matrices)
 
-    for a, b in zip(scanner.scan(sample), scan.scan_dna(sample, matrices, flat4, thresholds)):
+    for a, b in zip(
+        scanner.scan(sample),
+        scan.scan_dna(sample, matrices, flat4, thresholds),
+        strict=True,
+    ):
         assert as_pairs(a) == as_pairs(b)
 
 
@@ -379,7 +385,7 @@ def test_naive_and_fast_scans_find_the_same_positions(sample, pfm_file, flat4):
     naive = scan.naive_scan_dna(sample, matrix, threshold)
     fast = scan.scan_dna(sample, [matrix], flat4, [threshold])[0]
     assert [m.pos for m in naive] == [m.pos for m in fast]
-    for a, b in zip(naive, fast):
+    for a, b in zip(naive, fast, strict=True):
         assert a.score == pytest.approx(b.score, abs=1e-12)
 
 

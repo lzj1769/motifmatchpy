@@ -189,7 +189,7 @@ def assert_matrix_close(actual, expected, rel: float = 1e-9, abs_: float = 1e-12
     assert len(actual) == len(expected), (
         f"row count differs: {len(actual)} != {len(expected)}"
     )
-    for i, (row_a, row_e) in enumerate(zip(actual, expected)):
+    for i, (row_a, row_e) in enumerate(zip(actual, expected, strict=True)):
         assert list(row_a) == pytest.approx(list(row_e), rel=rel, abs=abs_), (
             f"row {i} differs"
         )
