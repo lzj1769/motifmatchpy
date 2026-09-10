@@ -1,0 +1,150 @@
+name: Publish
+
+# Releases are driven by the version in pyproject.toml: bump it on main and the
+# new version goes to PyPI. Nothing else needs doing -- no tag to remember, no
+# separate release step -- and because the gate is "this version is not on PyPI
+# yet" rather than "the file changed", re-running the workflow, force-pushing or
+# landing several commits at once all behave sensibly.
+#
+# One-time setup on PyPI, without which the publish job cannot authenticate:
+# add a trusted publisher (Your projects -> Publishing, or a pending publisher
+# if the project does not exist yet) with
+#   owner: lzj1769   repository: motifmatchpy
+#   workflow: publish.yml   environment: pypi
+# There is no API token to store.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: check version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+      publish: ${{ steps.check.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is this version already on PyPI?
+        id: check
+        run: |
+          version=$(python3 -c "
+          import pathlib, tomllib
+          print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])
+          ")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          url="https://pypi.org/pypi/motifmatchpy/$version/json"
+          code=$(curl -sS -o /dev/null -w '%{http_code}' "$url")
+          case "$code" in
+            200)
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              echo "::notice::motifmatchpy $version is already on PyPI; nothing to do."
+              ;;
+            404)
+              echo "publish=true" >> "$GITHUB_OUTPUT"
+              echo "::notice::motifmatchpy $version is not on PyPI yet; releasing it."
+              ;;
+            *)
+              # Publishing is irreversible, so an unreadable answer stops the run
+              # rather than being guessed at.
+              echo "::error::PyPI returned HTTP $code for $url; refusing to guess."
+              exit 1
+              ;;
+          esac
+
+  build:
+    name: build and verify
+    needs: version
+    if: needs.version.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: "3.12"
+
+      # uv builds the wheel from the sdist, so this also proves the sdist is
+      # complete enough to build from.
+      - name: Build
+        run: uv build
+
+      - name: Check the artifacts carry the expected version
+        run: |
+          version="${{ needs.version.outputs.version }}"
+          ls -l dist
+          test -f "dist/motifmatchpy-$version-py3-none-any.whl"
+          test -f "dist/motifmatchpy-$version.tar.gz"
+
+      - name: Test the wheel that is about to be published
+        # CI covers the whole matrix on the same commit, but a release should not
+        # depend on someone noticing that it went red.
+        run: |
+          uv venv --python 3.12
+          uv pip install dist/*.whl pytest
+          .venv/bin/python -c "
+          import motifmatchpy
+          assert motifmatchpy.__version__ == '${{ needs.version.outputs.version }}', motifmatchpy.__version__
+          assert 'site-packages' in motifmatchpy.__file__, motifmatchpy.__file__
+          "
+          .venv/bin/pytest -q -m "not slow" -p no:cacheprovider
+          .venv/bin/motifmatchpy --version
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    name: publish to PyPI
+    needs: [version, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: pypi
+      url: https://pypi.org/project/motifmatchpy/${{ needs.version.outputs.version }}
+    permissions:
+      # Trusted publishing: PyPI verifies a short-lived OIDC token from this
+      # workflow, so there is no long-lived secret to leak.
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  tag:
+    name: tag the release
+    needs: [version, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag the commit that was released
+        # Without this there is nothing in the history marking what went out.
+        run: |
+          version="${{ needs.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$version" -m "motifmatchpy $version"
+          git push origin "v$version"

@@ -162,6 +162,17 @@ CI runs the full suite on Linux and macOS across Python 3.12, 3.13 and 3.14, and
 separately checks that the built wheel installs and works on its own -- Windows
 included -- with no compiler and no reference build.
 
+### Releasing
+
+Bump `version` in `pyproject.toml` on `main`. That is the whole process: the
+publish workflow notices the version is not on PyPI yet, builds the sdist and
+wheel, runs the test suite against the wheel it is about to upload, publishes it
+via PyPI trusted publishing, and tags the commit `v<version>`.
+
+`__version__` is read from the installed distribution rather than written out a
+second time, so `motifmatchpy --version` cannot drift from the version that gets
+released.
+
 `reference/` holds the original MOODS C++ core with nanobind bindings, built as
 a separate development-only package. It exists so the tests can assert that this
 implementation and the original agree exactly, on real data and on tens of
