@@ -52,7 +52,7 @@ source = { directory = "reference" }
 
 [[package]]
 name = "motifmatchpy"
-version = "0.1.0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "numba" },
