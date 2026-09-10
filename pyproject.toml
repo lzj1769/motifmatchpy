@@ -1,0 +1,54 @@
+[build-system]
+requires = ["uv_build>=0.12.12,<0.13.0"]
+build-backend = "uv_build"
+
+[project]
+name = "motifmatchpy"
+version = "0.1.0"
+description = "Position weight matrix matching for DNA: a pure-Python port of MOODS"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+license-files = ["COPYING.GPLv3", "COPYING.BIOPYTHON"]
+authors = [{ name = "lzj1769", email = "lzj1769@gmail.com" }]
+keywords = ["PWM", "PSSM", "motif", "bioinformatics", "MOODS", "DNA"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "numpy>=1.26",
+    "numba>=0.60",
+]
+
+[project.urls]
+Homepage = "https://github.com/lzj1769/motifmatchpy"
+Upstream = "https://github.com/jhkorhonen/MOODS"
+
+[project.scripts]
+motifmatchpy = "motifmatchpy.cli:main"
+
+[tool.uv.build-backend]
+module-root = "src"
+module-name = "motifmatchpy"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "slow: takes more than a second or so",
+    "reference: compares against the MOODS C++ core (needs moods-reference)",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "moods-reference",
+]
+
+[tool.uv.sources]
+moods-reference = { path = "reference" }
