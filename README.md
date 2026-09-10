@@ -1,5 +1,7 @@
 # motifmatchpy
 
+[![CI](https://github.com/lzj1769/motifmatchpy/actions/workflows/ci.yml/badge.svg)](https://github.com/lzj1769/motifmatchpy/actions/workflows/ci.yml)
+
 Position weight matrix matching for DNA: a pure-Python port of
 [MOODS](https://github.com/jhkorhonen/MOODS), with the inner loops compiled by
 [numba](https://numba.pydata.org/).
@@ -153,7 +155,12 @@ uv sync                          # installs the package and the C++ reference
 uv run pytest                    # 521 tests, including the C++ parity suite
 uv run pytest -m "not slow"      # skip the exhaustive sweeps
 uv run pytest -m reference       # only the comparisons against MOODS
+uvx ruff check src tests         # lint
 ```
+
+CI runs the full suite on Linux and macOS across Python 3.12, 3.13 and 3.14, and
+separately checks that the built wheel installs and works on its own -- Windows
+included -- with no compiler and no reference build.
 
 `reference/` holds the original MOODS C++ core with nanobind bindings, built as
 a separate development-only package. It exists so the tests can assert that this

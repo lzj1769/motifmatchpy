@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch makes the running one irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      # Pinned: an unpinned linter turns someone else's release into a red build.
+      - run: uvx ruff@0.16.6 check src tests
+
+  test:
+    # The full suite, including the 279 tests that compare every result against
+    # the MOODS C++ core. That comparison needs the reference extension built
+    # from reference/, so this job only runs where the compiler flags it relies
+    # on -- contraction off, so `a + b * c` is not fused -- are known to hold.
+    name: test (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python }}
+
+      - name: Install, building the MOODS C++ reference
+        # No --python here: setup-uv has already set UV_PYTHON, and passing the
+        # flag as well lets the repo's .python-version quietly win instead.
+        run: uv sync
+
+      - name: Check the environment is what the matrix asked for
+        # .python-version pins the oldest supported interpreter for local work.
+        # If it ever overrode UV_PYTHON, every job would test 3.12 and say
+        # nothing -- so assert the version rather than trusting it. The same goes
+        # for the reference: were it missing, the parity tests would skip quietly
+        # and leave the job green without checking the one thing they exist for.
+        run: |
+          uv run python -c "
+          import sys, moods_reference
+          want = '${{ matrix.python }}'
+          got = '.'.join(map(str, sys.version_info[:2]))
+          assert got == want, f'expected Python {want}, got {got}'
+          print(f'Python {got}, MOODS reference {moods_reference.MOODS_VERSION}')
+          "
+
+      - name: Test
+        run: uv run pytest -v --durations=10
+
+  wheel:
+    name: build wheel
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv build --wheel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel
+          path: dist/*.whl
+          if-no-files-found: error
+
+  wheel-test:
+    # motifmatchpy ships as a single py3-none-any wheel with no compiled parts,
+    # so the same file has to work everywhere -- Windows included, where the C++
+    # reference is not built. The parity tests skip themselves there.
+    name: wheel (${{ matrix.os }}, py${{ matrix.python }})
+    needs: wheel
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.12", "3.14"]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheel
+          path: dist
+
+      - name: Install the wheel into a bare environment
+        run: |
+          uv venv --python ${{ matrix.python }}
+          uv pip install dist/*.whl pytest
+          # Relative, so Git Bash on Windows does not have to translate a path.
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            echo "BIN=.venv/Scripts" >> "$GITHUB_ENV"
+          else
+            echo "BIN=.venv/bin" >> "$GITHUB_ENV"
+          fi
+
+      - name: Test the installed package
+        # This runs against the installed wheel, not the source tree: only tests/
+        # goes on sys.path, so `import motifmatchpy` resolves to site-packages.
+        run: |
+          "$BIN/python" -c "
+          import sys, motifmatchpy
+          want = '${{ matrix.python }}'
+          got = '.'.join(map(str, sys.version_info[:2]))
+          assert got == want, f'expected Python {want}, got {got}'
+          assert 'site-packages' in motifmatchpy.__file__, motifmatchpy.__file__
+          print(f'Python {got}: {motifmatchpy.__file__}')
+          "
+          "$BIN/pytest" -v -m "not slow" -p no:cacheprovider
+
+      - name: Check the command line entry point
+        run: |
+          "$BIN/motifmatchpy" --version
+          "$BIN/motifmatchpy" info -m tests/data/matrices/MA0001.pfm --header
