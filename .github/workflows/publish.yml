@@ -94,7 +94,8 @@ jobs:
         # CI covers the whole matrix on the same commit, but a release should not
         # depend on someone noticing that it went red.
         run: |
-          uv venv --python 3.12
+          # --clear because setup-uv has already created a .venv here.
+          uv venv --clear --python 3.12
           uv pip install dist/*.whl pytest
           .venv/bin/python -c "
           import motifmatchpy

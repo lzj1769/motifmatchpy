@@ -121,7 +121,9 @@ jobs:
 
       - name: Install the wheel into a bare environment
         run: |
-          uv venv --python ${{ matrix.python }}
+          # --clear because setup-uv has already created a .venv here, and uv
+          # refuses to write over one it did not make.
+          uv venv --clear --python ${{ matrix.python }}
           uv pip install dist/*.whl pytest
           # Relative, so Git Bash on Windows does not have to translate a path.
           if [ "$RUNNER_OS" = "Windows" ]; then
