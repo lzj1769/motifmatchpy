@@ -1,0 +1,23 @@
+# Development-only package: the original MOODS C++ core, bound with nanobind.
+#
+# motifmatchpy itself is pure Python. This package exists so the test suite can
+# compare the Python implementation against the C++ one it was ported from, and
+# so benchmarks have something to measure against. It is never a runtime
+# dependency of motifmatchpy and is not published.
+
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.4"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "moods-reference"
+version = "1.9.4.1"
+description = "MOODS 1.9.4.1 C++ core with nanobind bindings, used as a test oracle for motifmatchpy"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+dependencies = []
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+build-dir = "build/{wheel_tag}"
+wheel.packages = ["moods_reference"]
