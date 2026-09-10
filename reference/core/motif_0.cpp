@@ -105,7 +105,15 @@ vector<unsigned int> compute_lookahead_order(const vector<double> &ed, unsigned 
         row_comp comp;
         comp.ed = &(ed);
         
-        std::sort(order.begin(), order.end(), comp);
+        // motifmatchpy patch: std::sort is not stable, and this comparator ties
+        // whenever two positions discriminate equally well -- which the JASPAR
+        // matrices do often. Tied positions then get examined in whatever order
+        // the standard library happens to produce, and since check_hit adds the
+        // scores up in exactly that order, the last bits of every score depend on
+        // which library built the binary: libc++ and libstdc++ disagree. Sorting
+        // stably makes the result the same everywhere, and the same as Python's
+        // (also stable) sort.
+        std::stable_sort(order.begin(), order.end(), comp);
         
         return order;
     }

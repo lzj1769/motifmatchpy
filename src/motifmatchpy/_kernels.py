@@ -18,6 +18,11 @@ from typing import NamedTuple
 
 import numpy as np
 
+# fastmath=False is numba's default, and it is spelled out on every kernel below
+# because the whole point of this package is that its scores match the C++
+# implementation bit for bit. Fast math would let LLVM fuse `a + b * c` into a
+# single multiply-add and reassociate sums, which is more accurate and entirely
+# reasonable -- and would quietly move the last bits of every score.
 try:  # pragma: no cover - exercised by whichever branch the environment takes
     from numba import njit
 except ImportError:  # pragma: no cover
@@ -83,7 +88,7 @@ class MotifTables(NamedTuple):
     suffix_data: np.ndarray
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=False)
 def check_hit_0(
     k, codes, window_match_pos, score, l,
     size, window_pos, threshold, mat_index, mat_data, mat_cols,
@@ -115,7 +120,7 @@ def check_hit_0(
     return score >= limit, score
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=False)
 def check_hit_high(
     k, codes, window_match_pos, score, l,
     size, window_pos, threshold, mat_index, mat_data, mat_cols,
@@ -181,7 +186,7 @@ def check_hit_high(
     return score >= limit, score
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=False)
 def process_matches(codes, bounds, shift, window_size, tables, mode, max_hits):
     """Scan ``codes`` and report every match above threshold.
 
@@ -327,14 +332,14 @@ def process_matches(codes, bounds, shift, window_size, tables, mode, max_hits):
     return out_motif[:found], out_pos[:found], out_score[:found], counts
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=False)
 def _grow_int(values, capacity, used):
     out = np.empty(capacity, dtype=np.int64)
     out[:used] = values[:used]
     return out
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=False)
 def _grow_float(values, capacity, used):
     out = np.empty(capacity, dtype=np.float64)
     out[:used] = values[:used]

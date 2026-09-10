@@ -132,6 +132,28 @@ Its loop ran while `i + cols + q - 1 < end`, where the 0-order overload uses
 This affects only the brute-force reference helper, but it made that helper
 disagree with the scanner it exists to check.
 
+### 10. `motif_0.cpp` -- lookahead order left to an unstable sort
+
+`compute_lookahead_order` ranks the positions outside the window by how well
+each discriminates, using `std::sort` with
+
+```cpp
+bool operator() (int i, int j) { return (*ed)[i] > (*ed)[j]; }
+```
+
+Positions that discriminate equally well compare equal, which the JASPAR
+matrices produce often -- 36 of the matrix, background and window-size
+combinations the tests cover have at least one tie inside the lookahead set.
+`std::sort` is not stable, so tied positions come out in whatever order the
+implementation happens to produce, and `check_hit` adds the scores up in exactly
+that order. The last bits of every score therefore depended on which standard
+library built the binary: libc++ and libstdc++ disagree, and the parity tests
+passed on macOS while failing on Linux.
+
+`std::stable_sort` makes the order the same everywhere, and the same as the
+(always stable) Python sort. Scores shift by at most a ULP -- 15 to 159 of a few
+hundred matches, in the tests that exposed it -- and no match position moves.
+
 ## Known upstream behaviour left as-is
 
 * **256-entry symbol tables are indexed with a plain `char`.** `snp_variants`,
