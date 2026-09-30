@@ -53,7 +53,7 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../peaks/">ATAC-seq peak workflow</a>
+                <li class="toctree-l1"><a class="reference internal" href="../peaks/">Genomic region workflow</a>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
@@ -213,7 +213,7 @@ overwritten; parent directories must already exist.</p>
 for each sequence record. Add <code>--batch</code> to use <code>--bg</code> for every record. Setting
 <code>--bg</code> alone does <strong>not</strong> override this per-record estimation. <code>threshold</code> always
 uses its <code>--bg</code> argument and has no <code>--batch</code> option. Peak scans always use
-the fixed <code>--bg</code>; see the <a href="../peaks/">ATAC-seq workflow</a>.</p>
+the fixed <code>--bg</code>; see the <a href="../peaks/">genomic region workflow</a>.</p>
 <pre><code class="language-sh">motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \
   -p 0.02 --batch --bg 0.3 0.2 0.2 0.3 --lo-bg 0.3 0.2 0.2 0.3
 </code></pre>
@@ -229,7 +229,7 @@ result table from an absent output file.</p>
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../peaks/" class="btn btn-neutral float-left" title="ATAC-seq peak workflow"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../peaks/" class="btn btn-neutral float-left" title="Genomic region workflow"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="scan/" class="btn btn-neutral float-right" title="scan">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 

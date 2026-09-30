@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/peaks/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>ATAC-seq peak workflow - motifmatchpy</title>
+    <title>Genomic region workflow - motifmatchpy</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,7 +13,7 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "ATAC-seq peak workflow";
+        var mkdocs_page_name = "Genomic region workflow";
         var mkdocs_page_input_path = "peaks.md";
         var mkdocs_page_url = "/motifmatchpy/peaks/";
       </script>
@@ -53,7 +53,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">ATAC-seq peak workflow</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Genomic region workflow</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#typical-command">Typical command</a>
     </li>
@@ -63,7 +63,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#parameters-and-defaults">Parameters and defaults</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#output-and-overlapping-peaks">Output and overlapping peaks</a>
+    <li class="toctree-l2"><a class="reference internal" href="#output-and-overlapping-regions">Output and overlapping regions</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#relation-to-rgt-matching">Relation to RGT matching</a>
     </li>
@@ -132,7 +132,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">ATAC-seq peak workflow</li>
+      <li class="breadcrumb-item active">Genomic region workflow</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/peaks.md">Edit on lzj1769/motifmatchpy</a>
     </li>
@@ -142,24 +142,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="scan-atac-seq-peaks-against-a-reference-genome">Scan ATAC-seq peaks against a reference genome<a class="headerlink" href="#scan-atac-seq-peaks-against-a-reference-genome" title="Permanent link">&para;</a></h1>
-<p>Provide a peak BED file, the matching genome assembly's FASTA, and motif
+                <h1 id="scan-specified-genomic-regions-against-a-reference-genome">Scan specified genomic regions against a reference genome<a class="headerlink" href="#scan-specified-genomic-regions-against-a-reference-genome" title="Permanent link">&para;</a></h1>
+<p>Provide a region BED file, the matching genome assembly's FASTA, and motif
 files in JASPAR, MEME, TRANSFAC, PFM or ADM format. <code>scan</code> extracts each interval, scans both strands, and writes one
 BED6 row per motif hit with <strong>genomic coordinates</strong>.</p>
 <h2 id="typical-command">Typical command<a class="headerlink" href="#typical-command" title="Permanent link">&para;</a></h2>
-<pre><code class="language-text">motifmatchpy scan --regions atac_peaks.bed --genome hg38.fa \
+<pre><code class="language-text">motifmatchpy scan --regions regions.bed --genome hg38.fa \
   -m JASPAR2026_CORE_vertebrates.jaspar -p 1e-4 -o motif_hits.bed
 </code></pre>
 <p>No intermediate FASTA extraction step, organism database installation, or genome
 index is needed. The FASTA is read once, retaining one requested chromosome at
 a time. Memory therefore scales with the largest requested chromosome, not just
-the peak length. Plain and gzip-compressed inputs are supported. Unrequested
+the region length. Plain and gzip-compressed inputs are supported. Unrequested
 chromosomes are read past without retaining their sequence; an existing <code>.fai</code>
 is not used.</p>
-<p>Use the same assembly for peaks and reference, and exactly matching chromosome
+<p>Use the same assembly for regions and reference, and exactly matching chromosome
 identifiers (<code>chr1</code> and <code>1</code> are different). Missing chromosomes, invalid BED
 coordinates, and intervals beyond a chromosome's end produce errors rather
-than silently clipping or skipping peaks. On an error, a partially written
+than silently clipping or skipping regions. On an error, a partially written
 output file may remain; check the command's exit status before using it.</p>
 <h2 id="run-the-bundled-example">Run the bundled example<a class="headerlink" href="#run-the-bundled-example" title="Permanent link">&para;</a></h2>
 <p>From the repository root:</p>
@@ -170,8 +170,8 @@ output file may remain; check the command's exit status before using it.</p>
 chr1    3   6   MA0000.1_TEST   4.15663 -
 chr1    8   11  MA0000.1_TEST   4.15663 +
 </code></pre>
-<p>The fixture contains two motifs; only <code>TEST</code> matches these peaks. The input
-peak <code>[2, 6)</code> contains a forward <code>ACG</code> and reverse <code>CGT</code>. The last hit comes
+<p>The fixture contains two motifs; only <code>TEST</code> matches these regions. The input
+region <code>[2, 6)</code> contains a forward <code>ACG</code> and reverse <code>CGT</code>. The last hit comes
 from <code>[8, 11)</code>. Coordinates are zero-based and half-open on both strands.</p>
 <h2 id="other-motif-file-formats">Other motif file formats<a class="headerlink" href="#other-motif-file-formats" title="Permanent link">&para;</a></h2>
 <p>The same command works with MEME or TRANSFAC input; no format flag is needed:</p>
@@ -206,15 +206,15 @@ conversion and naming rules.</p>
 </tr>
 <tr>
 <td><code>-S FILE ...</code></td>
-<td>Existing score matrices, also usable with peaks</td>
+<td>Existing score matrices, also usable with regions</td>
 </tr>
 <tr>
 <td><code>-p P</code></td>
-<td>P-value cutoff; default <code>1e-4</code> when no cutoff is supplied in peak mode</td>
+<td>P-value cutoff; default <code>1e-4</code> when no cutoff is supplied in region mode</td>
 </tr>
 <tr>
 <td><code>-t T</code> / <code>-B N</code></td>
-<td>Alternatives: absolute threshold / approximate best hits per peak</td>
+<td>Alternatives: absolute threshold / approximate best hits per region</td>
 </tr>
 <tr>
 <td><code>--bg A C G T</code></td>
@@ -238,31 +238,31 @@ conversion and naming rules.</p>
 </tr>
 <tr>
 <td><code>-f bed\|csv\|tsv</code></td>
-<td>Default BED in peak mode</td>
+<td>Default BED in region mode</td>
 </tr>
 </tbody>
 </table>
 <p><code>--regions</code> and <code>--genome</code> must be given together and cannot be combined with <code>-s</code>.
-Peak mode always uses a fixed background, so <code>--batch</code> is implicit. The same
-prepared scanner is reused across peaks. Original <code>-s</code> mode retains its
+Region mode always uses a fixed background, so <code>--batch</code> is implicit. The same
+prepared scanner is reused across regions. Original <code>-s</code> mode retains its
 per-record background default and requires an explicit cutoff.</p>
-<h2 id="output-and-overlapping-peaks">Output and overlapping peaks<a class="headerlink" href="#output-and-overlapping-peaks" title="Permanent link">&para;</a></h2>
+<h2 id="output-and-overlapping-regions">Output and overlapping regions<a class="headerlink" href="#output-and-overlapping-regions" title="Permanent link">&para;</a></h2>
 <p>BED6 fields are <code>chrom</code>, <code>start</code>, <code>end</code>, <code>motif</code>, <code>score</code>, <code>strand</code>. JASPAR names
 combine header ID and TF name, such as <code>MA0139.1_CTCF</code>. Scores are raw log-odds
 values, not normalized 0–1000 BED scores. The default logarithm is natural log;
-use <code>--log-base 2</code> for bits. CSV/TSV also uses genomic positions in peak mode,
+use <code>--log-base 2</code> for bits. CSV/TSV also uses genomic positions in region mode,
 while its <code>match</code> column shows the actual matched reference bases.</p>
-<p>Only hits entirely contained within an individual peak are reported. Peaks are
+<p>Only hits entirely contained within an individual region are reported. Regions are
 not joined, extended, or centered on summits. Additional BED columns, including
-peak name and strand, do not change scanning. Each peak is scanned independently,
-so identical or overlapping peaks can produce duplicate hits. Both strands of
+region name and strand, do not change scanning. Each region is scanned independently,
+so identical or overlapping regions can produce duplicate hits. Both strands of
 a palindromic motif are retained.</p>
-<p>Records follow FASTA chromosome order, then peak start/end order, with hits
-sorted within each peak. Overlapping peaks mean the resulting BED is not
+<p>Records follow FASTA chromosome order, then region start/end order, with hits
+sorted within each region. Overlapping regions mean the resulting BED is not
 necessarily globally sorted. To obtain sorted, unique rows on Unix:</p>
 <pre><code class="language-sh">sort -k1,1 -k2,2n -k3,3n motif_hits.bed | uniq &gt; motif_hits.unique.bed
 </code></pre>
-<p>For peak-associated analyses, retain duplicates or preserve the original peaks
+<p>For region-associated analyses, retain duplicates or preserve the original regions
 and intersect hits back to them, rather than discarding associations blindly.</p>
 <h2 id="relation-to-rgt-matching">Relation to RGT matching<a class="headerlink" href="#relation-to-rgt-matching" title="Permanent link">&para;</a></h2>
 <p>This workflow follows the region-to-motif-instance BED pattern of
