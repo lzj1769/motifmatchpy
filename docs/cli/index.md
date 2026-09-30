@@ -56,7 +56,7 @@ For `scan -s ... -p`, the default is to estimate the threshold background separa
 for each sequence record. Add `--batch` to use `--bg` for every record. Setting
 `--bg` alone does **not** override this per-record estimation. `threshold` always
 uses its `--bg` argument and has no `--batch` option. Peak scans always use
-the fixed `--bg`; see the [ATAC-seq workflow](../peaks.md).
+the fixed `--bg`; see the [genomic region workflow](../peaks.md).
 
 ```sh
 motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \

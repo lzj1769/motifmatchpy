@@ -106,19 +106,19 @@ given strand only, `--no-snps` ignores ambiguity codes, and `--batch` keeps the
 thresholds fixed instead of re-deriving them from each sequence. `motifmatchpy
 scan -h` lists the rest.
 
-### ATAC-seq peaks and JASPAR collections
+### Scan specified genomic regions
 
 ```sh
-motifmatchpy scan --regions atac_peaks.bed --genome hg38.fa \
+motifmatchpy scan --regions regions.bed --genome hg38.fa \
   -m motifs.jaspar -p 1e-4 -o motif_hits.bed
 ```
 
-This scans each peak on both strands and writes one BED6 row per hit with
+This scans each genomic region on both strands and writes one BED6 row per hit with
 zero-based genomic coordinates. `-m/--matrices` auto-detects JASPAR, MEME, TRANSFAC, PFM and ADM by content,
 including multi-motif collections.
-Peak mode defaults to BED, a uniform background, and `p=1e-4`; scores remain raw
-log-odds. Overlapping peaks are scanned independently and can produce duplicate
-hits. See the [complete peak workflow](docs/peaks.md) for examples and input rules.
+Region mode defaults to BED, a uniform background, and `p=1e-4`; scores remain raw
+log-odds. Overlapping regions are scanned independently and can produce duplicate
+hits. See the [complete genomic region workflow](docs/peaks.md) for examples and input rules.
 
 ## File formats
 

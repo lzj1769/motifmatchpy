@@ -4,7 +4,7 @@ Find motif occurrences in one or more FASTA or plain-text files, including gzip
 input. Select **exactly one** cutoff: `-p`, `-t`, or `-B`.
 Alternatively, provide `--regions BED --genome FASTA` to scan genomic intervals;
 this defaults to BED output and `-p 1e-4`. See the
-[ATAC-seq peak workflow](../peaks.md) for a full JASPAR example.
+[genomic region workflow](../peaks.md) for a full JASPAR example.
 
 ```sh
 motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \

@@ -47,7 +47,7 @@ headers in one collection are rejected. `-m` always converts counts;
 use `-S` for precomputed numeric scores.
 
 For genomic BED3/narrowPeak inputs and output coordinates, see the
-[peak workflow](peaks.md).
+[genomic region workflow](peaks.md).
 
 ## MEME text collections
 
