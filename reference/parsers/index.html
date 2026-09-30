@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
@@ -88,6 +92,14 @@
     <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.parsers">parsers</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.ParseError">ParseError</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.detect_format">detect_format</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.jaspar">jaspar</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.meme">meme</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.transfac">transfac</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.pfm">pfm</a>
     </li>
@@ -146,8 +158,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="matrix-parsers">Matrix parsers<a class="headerlink" href="#matrix-parsers" title="Permanent link">&para;</a></h1>
-<p>These functions read numeric matrices and ADM terms. They do not parse a
-multi-motif JASPAR/MEME database. See <a href="../../formats/">file formats</a>.</p>
+<p>These functions read numeric matrices, ADM terms, and JASPAR/MEME/TRANSFAC
+collections. <code>jaspar()</code>, <code>meme()</code>, and <code>transfac()</code> return <code>(name, count_matrix)</code>
+pairs. <code>read_motifs()</code> auto-detects formats and converts counts to scores. See <a href="../../formats/">file formats</a>.</p>
 
 
 <div class="doc doc-object doc-module">
@@ -163,7 +176,7 @@ multi-motif JASPAR/MEME database. See <a href="../../formats/">file formats</a>.
     <div class="doc doc-contents first">
 
         <p>Matrix file parsers.</p>
-<p>Two formats are understood, both plain whitespace-separated numbers:</p>
+<p>PFM/ADM tables and JASPAR, MEME text, and TRANSFAC collections are supported:</p>
 <p><code>.pfm</code>
     A JASPAR-style count matrix: one row per symbol (A, C, G, T), one column
     per motif position.</p>
@@ -171,6 +184,12 @@ multi-motif JASPAR/MEME database. See <a href="../../formats/">file formats</a>.
     An adjacent dinucleotide model: <code>a * a</code> rows of first-order conditional
     terms, followed by <code>a</code> rows giving the zero-order terms for the first
     position.</p>
+<p>JASPAR collections
+    One or more <code>&gt;ID NAME</code> records, each with four A/C/G/T count rows,
+    optionally labelled and bracketed. Read these with :func:<code>jaspar</code>.</p>
+<p>MEME / TRANSFAC
+    Position-oriented DNA matrices, transposed to A/C/G/T rows by :func:<code>meme</code>
+    and :func:<code>transfac</code>. MEME probabilities are scaled by their site count.</p>
 
 
 
@@ -222,6 +241,88 @@ multi-motif JASPAR/MEME database. See <a href="../../formats/">file formats</a>.
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.detect_format" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">detect_format</span>
+
+
+<a href="#motifmatchpy.parsers.detect_format" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">detect_format(filename: str | PathLike[str]) -&gt; str</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Detect JASPAR, MEME, TRANSFAC or numeric PFM/ADM input by content.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.jaspar" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">jaspar</span>
+
+
+<a href="#motifmatchpy.parsers.jaspar" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">jaspar(filename: str | PathLike[str]) -&gt; list[tuple[str, list[list[float]]]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read a single- or multi-motif JASPAR count collection.</p>
+<p>Each record starts with <code>&gt;ID TF_NAME</code> and has four A/C/G/T rows.
+Both labelled bracketed rows and unlabelled numeric PFM rows are accepted.
+Names join header fields with <code>_</code> (for example <code>MA0139.1_CTCF</code>).
+Counts must be finite and non-negative. Gzip files are supported.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.meme" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">meme</span>
+
+
+<a href="#motifmatchpy.parsers.meme" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">meme(filename: str | PathLike[str]) -&gt; list[tuple[str, list[list[float]]]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read DNA MEME text matrices as counts (probabilities times nsites).</p>
+<p>Missing nsites defaults to 20. File background and strand declarations do
+not override the caller's conversion background or scanning options.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.transfac" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">transfac</span>
+
+
+<a href="#motifmatchpy.parsers.transfac" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">transfac(filename: str | PathLike[str]) -&gt; list[tuple[str, list[list[float]]]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read TRANSFAC DNA counts; names combine AC and ID where available.</p>
+
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 

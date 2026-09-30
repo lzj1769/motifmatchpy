@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../cli/">Common options</a>
@@ -71,6 +75,12 @@
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">File formats and coordinates</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pfm-counts-and-score-matrices">PFM counts and score matrices</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#jaspar-collections">JASPAR collections</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#meme-text-collections">MEME text collections</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#transfac-collections">TRANSFAC collections</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#adm-models">ADM models</a>
     </li>
@@ -150,10 +160,50 @@ The <a href="../examples/toy.pfm">example PFM</a> is:</p>
 adds a background-weighted pseudocount, normalizes each column, divides by the
 background probability, and takes a logarithm. Natural logarithms are default.
 <code>-S</code> or <code>log_odds=False</code> interprets numeric entries as scores directly.</p>
-<p>This is a <strong>numeric table</strong>, not every format named JASPAR/PFM. Remove row labels
-such as <code>A [ ... ]</code>, brackets, and multi-motif database wrappers first. The parser
-stops each line at the first nonnumeric token and drops lines with no numbers;
-labels at the start of a row therefore discard that row.</p>
+<p><code>-m/--matrices</code> and Python's <code>read_motifs()</code> detect formats by content:
+<code>&gt;</code> headers identify JASPAR, <code>MEME version</code> identifies MEME text, TRANSFAC uses
+record tags, and numeric tables are distinguished by their shape. File suffixes
+need not match. All formats support gzip. Once a collection format is recognized,
+malformed records raise errors rather than falling back to numeric-table parsing.</p>
+<p>Use <code>read_motifs()</code> for collections. <code>Motif.from_file()</code> accepts one motif and
+rejects multi-motif input instead of silently selecting the first record.</p>
+<h2 id="jaspar-collections">JASPAR collections<a class="headerlink" href="#jaspar-collections" title="Permanent link">&para;</a></h2>
+<p>Use <code>-m FILE</code> for JASPAR download files with one or many motifs:</p>
+<pre><code class="language-text">&gt;MA0000.1 TEST
+A [10 0 0]
+C [0 10 0]
+G [0 0 10]
+T [0 0 0]
+</code></pre>
+<p>Each record has a <code>&gt;ID TF_NAME</code> header and four rows in A/C/G/T order.
+Unlabelled numeric rows following a header (JASPAR's PFM export) are also
+supported. Counts must be finite, non-negative, and equal-length. Empty lines
+and <code>#</code> comments are ignored; gzip is supported. Duplicate combined ID/name
+headers in one collection are rejected. <code>-m</code> always converts counts;
+use <code>-S</code> for precomputed numeric scores.</p>
+<p>For genomic BED3/narrowPeak inputs and output coordinates, see the
+<a href="../peaks/">peak workflow</a>.</p>
+<h2 id="meme-text-collections">MEME text collections<a class="headerlink" href="#meme-text-collections" title="Permanent link">&para;</a></h2>
+<p>DNA MEME minimal text files start with <code>MEME version</code> and contain <code>MOTIF ID NAME</code>
+records with <code>letter-probability matrix:</code> blocks. Matrix rows are positions,
+columns are A/C/G/T. Probabilities must be finite, in [0, 1], and sum to one
+within rounding tolerance. The parser checks <code>w</code> and <code>alength</code> when supplied;
+without <code>w</code>, it infers the number of consecutive probability rows.</p>
+<p>Probabilities are multiplied by <code>nsites</code> to obtain effective counts before the
+usual pseudocount/log-odds conversion. Missing <code>nsites</code> defaults to 20, following
+<a href="https://meme-suite.org/meme/doc/meme-format.html">MEME's format specification</a>.
+For example, <code>nsites=10</code> and a probability of 0.7 produce a count of 7.
+File background and strand declarations do not override <code>--lo-bg</code>, <code>--bg</code>, or
+<code>-R</code>. Protein/custom alphabets, MEME XML/HTML, and files containing only log-odds
+matrices are not supported by this count-input reader.</p>
+<h2 id="transfac-collections">TRANSFAC collections<a class="headerlink" href="#transfac-collections" title="Permanent link">&para;</a></h2>
+<p>TRANSFAC records contain <code>AC</code> and/or <code>ID</code> identifiers, a <code>P0 A C G T</code> (or <code>PO</code>)
+header, consecutively numbered position rows starting at 1, and a terminating
+<code>//</code>. Each row contains four finite, non-negative counts and optionally a
+consensus symbol. Column permutations in the header are reordered into A/C/G/T.
+Other metadata fields are ignored. Names combine AC and ID when both exist.
+The <a href="https://biopython.org/docs/latest/Tutorial/chapter_motifs.html">TRANSFAC format example</a>
+illustrates the record layout.</p>
 <h2 id="adm-models">ADM models<a class="headerlink" href="#adm-models" title="Permanent link">&para;</a></h2>
 <p>A DNA <code>.adm</code> file has 20 nonempty numeric rows:</p>
 <ul>
@@ -161,8 +211,7 @@ labels at the start of a row therefore discard that row.</p>
 <li>Four rows for the initial A/C/G/T marginal terms; only the first value of each
   is used during log-odds conversion.</li>
 </ul>
-<p>An ADM with W conditional columns spans W+1 sequence positions. The reader
-chooses a parser from the suffix first, then tries the other supported format.
+<p>An ADM with W conditional columns spans W+1 sequence positions. Numeric table shape determines whether the data is PFM or ADM.
 For raw ADM scores (<code>-S</code>), the 16 conditional rows are used directly; the four
 trailing rows are required by the file parser but are not folded into scores.</p>
 <p>File loading supports zero-order PFM and first-order ADM models. Construct

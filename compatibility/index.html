@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../cli/">Common options</a>
@@ -164,8 +168,8 @@ best-hits does not chain into SNP scanning; use a fixed cutoff for variants.</p>
 </ul>
 <h2 id="different-results-between-cli-and-python">Different results between CLI and Python<a class="headerlink" href="#different-results-between-cli-and-python" title="Permanent link">&para;</a></h2>
 <p>Align the matrix conversion background, threshold background, pseudocount,
-logarithm base, p-value precision, strands, and IUPAC behavior. CLI p-value scans
-estimate background per record by default; Python uses a fixed uniform
+logarithm base, p-value precision, strands, and IUPAC behavior. CLI <code>-s</code> p-value scans
+estimate background per record by default; peak scans use a fixed background; Python uses a fixed uniform
 background. CLI cutoff scans include IUPAC alternatives by default; Python's
 <code>scan()</code> requires <code>include_variants=True</code>.</p>
 <p>CSV/TSV scores have six significant digits, whereas Python retains full
@@ -178,8 +182,10 @@ more permissive cutoffs, and larger threshold precision can consume more
 memory. Start with the default window and precision, and use a fixed background
 when appropriate.</p>
 <h2 id="matrix-parsing-errors">Matrix parsing errors<a class="headerlink" href="#matrix-parsing-errors" title="Permanent link">&para;</a></h2>
-<p>PFM input must have four numeric rows for DNA. Row labels and brackets are not
-supported. ADM input needs 16 conditional rows plus four nonempty initial-term
+<p><code>-m</code> detects numeric PFM/ADM and JASPAR/MEME/TRANSFAC collections by content.
+Numeric PFM tables need four rows for DNA; labelled JASPAR rows need a motif
+header. MEME requires a DNA probability matrix; TRANSFAC requires a P0/PO header
+and record terminators. ADM input needs 16 conditional rows plus four nonempty initial-term
 rows. Higher-order numeric score matrices should be constructed through the
 Python API rather than treated as ordinary PFM files.</p>
 <h2 id="reporting-a-problem">Reporting a problem<a class="headerlink" href="#reporting-a-problem" title="Permanent link">&para;</a></h2>

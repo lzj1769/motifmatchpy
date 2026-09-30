@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
@@ -397,10 +401,10 @@ the documentation build.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Read a single <code>.pfm</code> or <code>.adm</code> file.</p>
-<p>The format is taken from the file's suffix where possible and otherwise
-detected by trying both. With <code>log_odds=False</code> the file is read as a
-scoring matrix and used directly instead of being converted.</p>
+        <p>Read one motif from an automatically detected motif file.</p>
+<p>PFM, ADM, JASPAR, MEME text and TRANSFAC are supported. Multi-motif
+collections require :func:<code>read_motifs</code>. With <code>log_odds=False</code>, only
+numeric score tables are accepted, without conversion.</p>
 
 
     </div>
@@ -752,7 +756,8 @@ following position, so the modified sequence no longer lines up with
 
     <div class="doc doc-contents first">
 
-        <p>Read several matrix files into :class:<code>Motif</code> objects.</p>
+        <p>Auto-detect and read motif files, expanding multi-motif collections.</p>
+<p><code>names</code> retains one name per file and is only valid for single-motif files.</p>
 
 
     </div>

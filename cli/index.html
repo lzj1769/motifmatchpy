@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Common options</a>
@@ -156,7 +160,7 @@ motifmatchpy info --help
 <tbody>
 <tr>
 <td><code>-m</code>, <code>--matrices FILE ...</code></td>
-<td>PFM counts or ADM terms; convert to log-odds</td>
+<td>Auto-detect PFM, ADM, JASPAR, MEME, TRANSFAC; convert to log-odds</td>
 <td>None</td>
 </tr>
 <tr>
@@ -181,13 +185,18 @@ motifmatchpy info --help
 </tr>
 </tbody>
 </table>
-<p>Supply at least one file via <code>-m</code> or <code>-S</code>; both may be used together. Each file
-contains one motif. Shell globs such as <code>-m matrices/*.pfm</code> are supported through
-shell expansion. Motif names default to filenames including their suffixes.
+<p>Supply files via <code>-m</code> or <code>-S</code>; they may be combined. <code>-m</code> accepts multiple
+files, and JASPAR/MEME/TRANSFAC files may each contain multiple motifs. Detection
+uses content rather than filenames, including for gzip input. Shell globs such
+as <code>-m matrices/*.pfm</code> are expanded by the shell. Numeric tables use filenames
+as motif names; collections use record IDs and names.</p>
+<p><code>-S</code> accepts numeric score tables without conversion. Count/probability
+collections passed to <code>-S</code> are rejected to avoid mistaking counts for scores.
 Conversion options do not transform matrices passed through <code>-S</code>.</p>
 <h2 id="output-options">Output options<a class="headerlink" href="#output-options" title="Permanent link">&para;</a></h2>
 <p>All subcommands support <code>-o/--output FILE</code>, <code>-f/--format csv|tsv</code>, <code>--header</code>,
-and <code>--sep S</code>. Output goes to stdout as CSV without a header unless specified.
+and <code>--sep S</code>. Output goes to stdout as CSV without a header unless specified;
+<code>scan --regions</code> defaults to BED instead.
 <code>scan</code> additionally supports <code>-f bed</code>. <code>--sep</code> accepts a single separator
 character and overrides the selected format's separator.</p>
 <pre><code class="language-sh">motifmatchpy info -m docs/examples/toy.pfm -f tsv --header -o motifs.tsv
@@ -200,10 +209,11 @@ overwritten; parent directories must already exist.</p>
 <li><code>--lo-bg</code> determines how input counts become log-odds scores.</li>
 <li><code>--bg</code> determines the score distribution used for p-value thresholds.</li>
 </ul>
-<p>For <code>scan -p</code>, the default is to estimate the threshold background separately
+<p>For <code>scan -s ... -p</code>, the default is to estimate the threshold background separately
 for each sequence record. Add <code>--batch</code> to use <code>--bg</code> for every record. Setting
 <code>--bg</code> alone does <strong>not</strong> override this per-record estimation. <code>threshold</code> always
-uses its <code>--bg</code> argument and has no <code>--batch</code> option.</p>
+uses its <code>--bg</code> argument and has no <code>--batch</code> option. Peak scans always use
+the fixed <code>--bg</code>; see the <a href="../peaks/">ATAC-seq workflow</a>.</p>
 <pre><code class="language-sh">motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \
   -p 0.02 --batch --bg 0.3 0.2 0.2 0.3 --lo-bg 0.3 0.2 0.2 0.3
 </code></pre>
@@ -219,7 +229,7 @@ result table from an absent output file.</p>
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quick start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../peaks/" class="btn btn-neutral float-left" title="ATAC-seq peak workflow"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="scan/" class="btn btn-neutral float-right" title="scan">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -247,7 +257,7 @@ result table from an absent output file.</p>
         </span>
     
     
-      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../peaks/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="scan/" style="color: #fcfcfc">Next &raquo;</a></span>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/peaks/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>ATAC-seq peak workflow - motifmatchpy</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ATAC-seq peak workflow";
+        var mkdocs_page_input_path = "peaks.md";
+        var mkdocs_page_url = "/motifmatchpy/peaks/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">ATAC-seq peak workflow</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#typical-command">Typical command</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#run-the-bundled-example">Run the bundled example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#other-motif-file-formats">Other motif file formats</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parameters-and-defaults">Parameters and defaults</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#output-and-overlapping-peaks">Output and overlapping peaks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#relation-to-rgt-matching">Relation to RGT matching</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">ATAC-seq peak workflow</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/peaks.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="scan-atac-seq-peaks-against-a-reference-genome">Scan ATAC-seq peaks against a reference genome<a class="headerlink" href="#scan-atac-seq-peaks-against-a-reference-genome" title="Permanent link">&para;</a></h1>
+<p>Provide a peak BED file, the matching genome assembly's FASTA, and motif
+files in JASPAR, MEME, TRANSFAC, PFM or ADM format. <code>scan</code> extracts each interval, scans both strands, and writes one
+BED6 row per motif hit with <strong>genomic coordinates</strong>.</p>
+<h2 id="typical-command">Typical command<a class="headerlink" href="#typical-command" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">motifmatchpy scan --regions atac_peaks.bed --genome hg38.fa \
+  -m JASPAR2026_CORE_vertebrates.jaspar -p 1e-4 -o motif_hits.bed
+</code></pre>
+<p>No intermediate FASTA extraction step, organism database installation, or genome
+index is needed. The FASTA is read once, retaining one requested chromosome at
+a time. Memory therefore scales with the largest requested chromosome, not just
+the peak length. Plain and gzip-compressed inputs are supported. Unrequested
+chromosomes are read past without retaining their sequence; an existing <code>.fai</code>
+is not used.</p>
+<p>Use the same assembly for peaks and reference, and exactly matching chromosome
+identifiers (<code>chr1</code> and <code>1</code> are different). Missing chromosomes, invalid BED
+coordinates, and intervals beyond a chromosome's end produce errors rather
+than silently clipping or skipping peaks. On an error, a partially written
+output file may remain; check the command's exit status before using it.</p>
+<h2 id="run-the-bundled-example">Run the bundled example<a class="headerlink" href="#run-the-bundled-example" title="Permanent link">&para;</a></h2>
+<p>From the repository root:</p>
+<pre><code class="language-sh">motifmatchpy scan --regions docs/examples/peaks.bed \
+  --genome docs/examples/genome.fa -m docs/examples/motifs.jaspar -p 0.02
+</code></pre>
+<pre><code class="language-text">chr1    2   5   MA0000.1_TEST   4.15663 +
+chr1    3   6   MA0000.1_TEST   4.15663 -
+chr1    8   11  MA0000.1_TEST   4.15663 +
+</code></pre>
+<p>The fixture contains two motifs; only <code>TEST</code> matches these peaks. The input
+peak <code>[2, 6)</code> contains a forward <code>ACG</code> and reverse <code>CGT</code>. The last hit comes
+from <code>[8, 11)</code>. Coordinates are zero-based and half-open on both strands.</p>
+<h2 id="other-motif-file-formats">Other motif file formats<a class="headerlink" href="#other-motif-file-formats" title="Permanent link">&para;</a></h2>
+<p>The same command works with MEME or TRANSFAC input; no format flag is needed:</p>
+<pre><code class="language-sh">motifmatchpy scan --regions docs/examples/peaks.bed \
+  --genome docs/examples/genome.fa -m docs/examples/motifs.meme -p 0.02
+motifmatchpy scan --regions docs/examples/peaks.bed \
+  --genome docs/examples/genome.fa -m docs/examples/motifs.transfac -p 0.02
+</code></pre>
+<p>You can also pass several files after <code>-m</code>, even when they use different formats.
+All records are loaded. See <a href="../formats/">file formats</a> for MEME probability
+conversion and naming rules.</p>
+<h2 id="parameters-and-defaults">Parameters and defaults<a class="headerlink" href="#parameters-and-defaults" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--regions BED</code></td>
+<td>BED3 or additional-column BED, including narrowPeak</td>
+</tr>
+<tr>
+<td><code>--genome FASTA</code></td>
+<td>Reference sequences; FASTA identifier is the first header token</td>
+</tr>
+<tr>
+<td><code>-m</code>, <code>--matrices FILE ...</code></td>
+<td>Auto-detected JASPAR, MEME, TRANSFAC, numeric PFM or ADM</td>
+</tr>
+<tr>
+<td><code>-S FILE ...</code></td>
+<td>Existing score matrices, also usable with peaks</td>
+</tr>
+<tr>
+<td><code>-p P</code></td>
+<td>P-value cutoff; default <code>1e-4</code> when no cutoff is supplied in peak mode</td>
+</tr>
+<tr>
+<td><code>-t T</code> / <code>-B N</code></td>
+<td>Alternatives: absolute threshold / approximate best hits per peak</td>
+</tr>
+<tr>
+<td><code>--bg A C G T</code></td>
+<td>Fixed threshold background; default uniform</td>
+</tr>
+<tr>
+<td><code>--lo-bg A C G T</code></td>
+<td>Count-conversion background; default uniform</td>
+</tr>
+<tr>
+<td><code>--ps P</code></td>
+<td>Conversion pseudocount; default <code>0.01</code></td>
+</tr>
+<tr>
+<td><code>-R</code></td>
+<td>Forward-strand search only</td>
+</tr>
+<tr>
+<td><code>-o FILE</code></td>
+<td>Output file; default stdout</td>
+</tr>
+<tr>
+<td><code>-f bed\|csv\|tsv</code></td>
+<td>Default BED in peak mode</td>
+</tr>
+</tbody>
+</table>
+<p><code>--regions</code> and <code>--genome</code> must be given together and cannot be combined with <code>-s</code>.
+Peak mode always uses a fixed background, so <code>--batch</code> is implicit. The same
+prepared scanner is reused across peaks. Original <code>-s</code> mode retains its
+per-record background default and requires an explicit cutoff.</p>
+<h2 id="output-and-overlapping-peaks">Output and overlapping peaks<a class="headerlink" href="#output-and-overlapping-peaks" title="Permanent link">&para;</a></h2>
+<p>BED6 fields are <code>chrom</code>, <code>start</code>, <code>end</code>, <code>motif</code>, <code>score</code>, <code>strand</code>. JASPAR names
+combine header ID and TF name, such as <code>MA0139.1_CTCF</code>. Scores are raw log-odds
+values, not normalized 0–1000 BED scores. The default logarithm is natural log;
+use <code>--log-base 2</code> for bits. CSV/TSV also uses genomic positions in peak mode,
+while its <code>match</code> column shows the actual matched reference bases.</p>
+<p>Only hits entirely contained within an individual peak are reported. Peaks are
+not joined, extended, or centered on summits. Additional BED columns, including
+peak name and strand, do not change scanning. Each peak is scanned independently,
+so identical or overlapping peaks can produce duplicate hits. Both strands of
+a palindromic motif are retained.</p>
+<p>Records follow FASTA chromosome order, then peak start/end order, with hits
+sorted within each peak. Overlapping peaks mean the resulting BED is not
+necessarily globally sorted. To obtain sorted, unique rows on Unix:</p>
+<pre><code class="language-sh">sort -k1,1 -k2,2n -k3,3n motif_hits.bed | uniq &gt; motif_hits.unique.bed
+</code></pre>
+<p>For peak-associated analyses, retain duplicates or preserve the original peaks
+and intersect hits back to them, rather than discarding associations blindly.</p>
+<h2 id="relation-to-rgt-matching">Relation to RGT matching<a class="headerlink" href="#relation-to-rgt-matching" title="Permanent link">&para;</a></h2>
+<p>This workflow follows the region-to-motif-instance BED pattern of
+<a href="https://reg-gen.readthedocs.io/en/latest/motif_analysis/tool_usage.html"><code>rgt-motifanalysis matching</code></a>.
+Here the genome and motif collection are supplied directly, rather than through
+an organism installation. It does not implement RGT enrichment, random regions,
+BigBed conversion, promoter selection, or all of RGT's filtering options.
+Defaults such as pseudocounts differ; do not assume numeric equivalence without
+aligning matrix conversion, backgrounds, and threshold settings.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quick start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cli/" class="btn btn-neutral float-right" title="Common options">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cli/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

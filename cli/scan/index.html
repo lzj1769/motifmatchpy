@@ -52,6 +52,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../peaks/">ATAC-seq peak workflow</a>
+                </li>
+              </ul>
               <p class="caption"><span class="caption-text">Command line</span></p>
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../">Common options</a>
@@ -139,7 +143,10 @@
               
                 <h1 id="scan">scan<a class="headerlink" href="#scan" title="Permanent link">&para;</a></h1>
 <p>Find motif occurrences in one or more FASTA or plain-text files, including gzip
-input. Select <strong>exactly one</strong> cutoff: <code>-p</code>, <code>-t</code>, or <code>-B</code>.</p>
+input. Select <strong>exactly one</strong> cutoff: <code>-p</code>, <code>-t</code>, or <code>-B</code>.
+Alternatively, provide <code>--regions BED --genome FASTA</code> to scan genomic intervals;
+this defaults to BED output and <code>-p 1e-4</code>. See the
+<a href="../../peaks/">ATAC-seq peak workflow</a> for a full JASPAR example.</p>
 <pre><code class="language-sh">motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
   -t 6 --header
 </code></pre>
@@ -157,7 +164,11 @@ See the <a href="../../quickstart/">quick start</a> for the exact CSV output.</p
 <tbody>
 <tr>
 <td><code>-s</code>, <code>--sequences FILE ...</code></td>
-<td>Required sequence files; records are processed individually</td>
+<td>Sequence files; mutually exclusive with peak mode</td>
+</tr>
+<tr>
+<td><code>--regions BED</code> / <code>--genome FASTA</code></td>
+<td>Peak intervals and reference genome; provide both</td>
 </tr>
 <tr>
 <td><code>-p</code>, <code>--p-value P</code></td>
@@ -210,7 +221,8 @@ are included unless <code>--no-snps</code> is set. Unknown bases break ordinary 
 </code></pre>
 <p>This converts counts to natural-log scores, uses a uniform background for both
 conversion and threshold calculation, and writes three ordinary matches.
-Without <code>--batch</code>, sequence composition changes the threshold for each record.</p>
+In <code>-s</code> mode without <code>--batch</code>, sequence composition changes the threshold for
+each record. Peak mode always uses the fixed <code>--bg</code>.</p>
 <h2 id="bed-output-and-forward-strand-only">BED output and forward strand only<a class="headerlink" href="#bed-output-and-forward-strand-only" title="Permanent link">&para;</a></h2>
 <pre><code class="language-sh">motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
   -t 6 -R -f bed -o hits.bed
@@ -234,6 +246,8 @@ With <code>-p</code> or <code>-t</code>, <code>--max-hits</code> limits ordinary
 For variant analysis, use <code>-p</code> or <code>-t</code>, or the low-level
 <a href="../../advanced/#explicit-variants">variant API</a>.</p>
 <h2 id="output-columns">Output columns<a class="headerlink" href="#output-columns" title="Permanent link">&para;</a></h2>
+<p>In peak mode, positions include the peak start offset and refer to the reference
+genome. In <code>-s</code> mode they are relative to the individual sequence record.</p>
 <p>CSV/TSV columns, in order: <code>sequence</code>, <code>motif</code>, <code>pos</code>, <code>strand</code>, <code>score</code>,
 <code>match</code>, <code>variant_match</code>. The last field is empty for ordinary hits. The matched
 bases are shown in input-sequence orientation even for <code>-</code> hits.</p>
