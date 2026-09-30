@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/scan/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Scanning - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Scanning";
+        var mkdocs_page_input_path = "reference/scan.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/scan/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Scanning</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.scan">scan</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.scan.Scanner">Scanner</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.max_motif_size">max_motif_size</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.set_motifs">set_motifs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.size">size</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.scan">scan</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.scan_max_hits">scan_max_hits</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.counts_max_hits">counts_max_hits</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#motifmatchpy.scan.Scanner.variant_matches">variant_matches</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.scan.scan_dna">scan_dna</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.scan.scan">scan</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.scan.scan_best_hits_dna">scan_best_hits_dna</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.scan.naive_scan_dna">naive_scan_dna</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">Scanning</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/scan.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="scanning">Scanning<a class="headerlink" href="#scanning" title="Permanent link">&para;</a></h1>
+<p>The low-level API returns one group per input matrix. It does not automatically
+add reverse complements. <a href="../../advanced/">Examples</a> cover DNA, custom alphabets,
+and explicit variants. <code>Scanner</code> and the DNA helpers are also exported at the
+package root.</p>
+<p><code>scan_max_hits</code> keeps the first hits up to the limit; it does not rank by score.
+Variant coordinates refer to the edited sequence.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="motifmatchpy.scan" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">motifmatchpy.scan</span>
+
+
+<a href="#motifmatchpy.scan" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Scanning sequences for motif occurrences.</p>
+<p>:class:<code>Scanner</code> is the workhorse: give it matrices and thresholds once, then
+scan as many sequences as you like. The module-level functions are convenience
+wrappers that build a scanner for a single call.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="motifmatchpy.scan.Scanner" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">Scanner</span>
+
+
+<a href="#motifmatchpy.scan.Scanner" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">Scanner(window_size: int = DEFAULT_WINDOW_SIZE, alphabet: Sequence[str] | None = None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Scans sequences for a fixed set of motifs.</p>
+<p>Preparing the matrices costs far more than scanning a short sequence, so
+build one scanner and reuse it rather than calling :func:<code>scan_dna</code> in a
+loop.</p>
+<p><code>window_size</code> trades preparation for speed: the lookup table has one entry
+per possible window content, so it grows as <code>alphabet_size ** window_size</code>
+while longer windows filter more aggressively. The default of 7 is a good
+balance for DNA and rarely worth changing.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="motifmatchpy.scan.Scanner.max_motif_size" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">max_motif_size</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.scan.Scanner.max_motif_size" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">max_motif_size: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The longest motif loaded, in sequence positions.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.set_motifs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">set_motifs</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.set_motifs" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">set_motifs(matrices: Sequence[Matrix], bg: Sequence[float], thresholds: Sequence[float]) -&gt; None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Prepare a set of matrices for scanning.</p>
+<p><code>bg</code> steers how the scanner lays out its search -- which slice of each
+motif goes in the window, and in what order the rest is examined. It
+does not enter the scores, so it changes how fast a scan runs but never
+what it finds.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.size" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">size</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.size" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">size() -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>How many motifs are loaded.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.scan" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.scan" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">scan(seq: str | bytes) -&gt; list[list[Match]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Every match above threshold, as one list per motif, ordered by position.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.scan_max_hits" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan_max_hits</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.scan_max_hits" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">scan_max_hits(seq: str | bytes, max_hits: int) -&gt; list[list[Match]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Matches per motif, giving up on a motif once it has <code>max_hits</code>.</p>
+<p>The matches kept are the first <code>max_hits</code> encountered, which is to say
+the leftmost ones -- not the highest scoring. This is a guard against a
+threshold so loose that one motif would swamp the run, not a way to pick
+out the best sites; :func:<code>scan_best_hits_dna</code> does that.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.counts_max_hits" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">counts_max_hits</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.counts_max_hits" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">counts_max_hits(seq: str | bytes, max_hits: int) -&gt; list[int]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>How many matches each motif has, with the same per-motif cut-off.</p>
+<p>Cheaper than :meth:<code>scan_max_hits</code> because no match objects are built.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="motifmatchpy.scan.Scanner.variant_matches" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">variant_matches</span>
+
+
+<a href="#motifmatchpy.scan.Scanner.variant_matches" class="headerlink" title="Permanent link">&para;</a></h4>
+<pre class="highlight"><code class="language-python doc-signature">variant_matches(seq: str | bytes, variants: Sequence[Variant], max_depth: int = 0) -&gt; list[list[MatchWithVariant]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Matches that exist only once one or more <code>variants</code> are applied.</p>
+<p>Each result is reported with the variants responsible for it. A match
+the unmodified sequence already contains is <em>not</em> reported here -- use
+:meth:<code>scan</code> for those -- and because insertions and deletions shift
+everything after them, positions are relative to the modified sequence.</p>
+<p><code>max_depth</code> caps how many variants may be combined in one match; 0
+means no limit beyond what the motifs' length allows.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.scan.scan_dna" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan_dna</span>
+
+
+<a href="#motifmatchpy.scan.scan_dna" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan_dna(seq: str | bytes, matrices: Sequence[Matrix], bg: Sequence[float], thresholds: Sequence[float], window_size: int = DEFAULT_WINDOW_SIZE) -&gt; list[list[Match]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Scan a DNA sequence, returning one list of matches per matrix.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.scan.scan" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan</span>
+
+
+<a href="#motifmatchpy.scan.scan" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan(seq: str | bytes, matrices: Sequence[Matrix], bg: Sequence[float], thresholds: Sequence[float], window_size: int, alphabet: Sequence[str]) -&gt; list[list[Match]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Scan a sequence over a custom alphabet.</p>
+<p><code>alphabet</code> maps matrix rows to sequence characters: entry <em>i</em> lists every
+character that should be read as row <em>i</em>, e.g. <code>['aA', 'cC', 'gG', 'tT']</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.scan.scan_best_hits_dna" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan_best_hits_dna</span>
+
+
+<a href="#motifmatchpy.scan.scan_best_hits_dna" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan_best_hits_dna(seq: str | bytes, matrices: Sequence[Matrix], target: int, iterations: int = 10, MULT: int = 2, LIMIT_MULT: int = 10, window_size: int = DEFAULT_WINDOW_SIZE) -&gt; list[list[Match]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return roughly the <code>target</code> best-scoring matches for each matrix.</p>
+<p>No threshold is needed: one is searched for. Each matrix is first tried at
+the highest score it can reach; those that are still too common there are
+given up on entirely, and the rest get a threshold found by binary search,
+aiming for between <code>target</code> and <code>MULT * target</code> matches and never
+returning more than <code>LIMIT_MULT * target</code>. <code>iterations</code> caps the search
+(0 for no cap).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.scan.naive_scan_dna" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">naive_scan_dna</span>
+
+
+<a href="#motifmatchpy.scan.naive_scan_dna" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">naive_scan_dna(seq: str | bytes, matrix: Matrix, threshold: float, a: int | None = None) -&gt; list[Match]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Brute-force scan of a single matrix: score every position, keep the rest.</p>
+<p>Slow, and useful mainly as a reference the fast scanners can be checked
+against.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../api/" class="btn btn-neutral float-left" title="High-level API"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tools/" class="btn btn-neutral float-right" title="Matrix utilities">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../api/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../tools/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

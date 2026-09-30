@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/api/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>High-level API - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "High-level API";
+        var mkdocs_page_input_path = "reference/api.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/api/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">High-level API</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.api.Motif">Motif</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.order">order</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.width">width</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.length">length</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.max_score">max_score</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.min_score">min_score</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.threshold_from_p">threshold_from_p</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.reverse_complement">reverse_complement</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Motif.from_file">from_file</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.api.MotifScanner">MotifScanner</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.motifs">motifs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.thresholds">thresholds</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.scan">scan</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.scan_fasta">scan_fasta</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.scan_best_hits">scan_best_hits</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.MotifScanner.count">count</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.api.Hit">Hit</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Hit.name">name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Hit.end">end</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Hit.matched_sequence">matched_sequence</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.api.Hit.variant_sequence">variant_sequence</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.api.read_motifs">read_motifs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.api.read_motif_file">read_motif_file</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">High-level API</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/api.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="high-level-api">High-level API<a class="headerlink" href="#high-level-api" title="Permanent link">&para;</a></h1>
+<p>Import these objects from <code>motifmatchpy</code>. See the <a href="../../python/">Python guide</a>
+for complete workflows. Signatures below are generated from the source during
+the documentation build.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy.api.Motif" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy.api.Motif</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">Motif(name: str, matrix: tuple[tuple[float, ...], ...], alphabet_size: int = 4, strand: str = '+')</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A named scoring matrix.</p>
+<p><code>matrix</code> holds scores (usually log-odds), one row per symbol for a
+0-order motif and one row per symbol <em>k</em>-tuple for a high-order one.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Motif.order" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">order</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.order" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">order: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>0 for a plain PWM, 1 for an adjacent dinucleotide model.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Motif.width" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">width</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.width" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">width: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Number of matrix columns.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Motif.length" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">length</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.length" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">length: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Number of sequence positions the motif spans.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Motif.max_score" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">max_score</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.max_score" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">max_score: float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Highest score this motif can assign.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Motif.min_score" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">min_score</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.min_score" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">min_score: float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Lowest score this motif can assign.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.Motif.threshold_from_p" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">threshold_from_p</span>
+
+
+<a href="#motifmatchpy.api.Motif.threshold_from_p" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">threshold_from_p(p: float, bg: Sequence[float] | None = None, precision: float | None = None) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Score threshold with a false-positive rate of at most <code>p</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.Motif.reverse_complement" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">reverse_complement</span>
+
+
+<a href="#motifmatchpy.api.Motif.reverse_complement" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">reverse_complement() -&gt; Motif</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The same motif scoring the opposite strand.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.Motif.from_file" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">from_file</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Motif.from_file" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">from_file(filename: str | PathLike[str], *, name: str | None = None, bg: Sequence[float] | None = None, pseudocount: float = 0.01, log_base: float | None = None, log_odds: bool = True, alphabet_size: int = 4) -&gt; Motif</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read a single <code>.pfm</code> or <code>.adm</code> file.</p>
+<p>The format is taken from the file's suffix where possible and otherwise
+detected by trying both. With <code>log_odds=False</code> the file is read as a
+scoring matrix and used directly instead of being converted.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy.api.MotifScanner" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy.api.MotifScanner</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">MotifScanner(motifs: Sequence[Motif], *, p_value: float | None = None, threshold: float | None = None, bg: Sequence[float] | str = 'flat', both_strands: bool = True, window_size: int = 7, threshold_precision: float | None = None)</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Scans sequences for a fixed set of motifs.</p>
+<p>Preprocessing the matrices dominates the cost of a small scan, so build one
+scanner and reuse it across sequences.</p>
+<p>Exactly one of <code>p_value</code> and <code>threshold</code> sets the score cutoff; pass
+neither if you only intend to call :meth:<code>scan_best_hits</code>.</p>
+<p><code>bg</code> is the background distribution used to turn a p-value into a score
+threshold. It may be a sequence of probabilities, <code>"flat"</code> for a uniform
+distribution, or <code>"auto"</code> to re-estimate it from each sequence -- which
+means recomputing thresholds per sequence, so it is markedly slower.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.MotifScanner.motifs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">motifs</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.MotifScanner.motifs" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">motifs: tuple[Motif, ...]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The motifs this scanner was built with (forward strand).</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.MotifScanner.thresholds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">thresholds</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner.thresholds" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">thresholds(seq: str | bytes | None = None) -&gt; list[float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Score thresholds in use, one per motif (forward strand).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.MotifScanner.scan" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner.scan" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan(seq: str | bytes, *, sequence_name: str = '', max_hits: int | None = None, include_variants: bool = False) -&gt; list[Hit]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Find every occurrence in <code>seq</code>, sorted by position.</p>
+<p><code>max_hits</code> abandons any motif that exceeds that many occurrences,
+which keeps a too-permissive threshold from swamping the run.</p>
+<p><code>include_variants</code> additionally reports occurrences that exist only
+because of an IUPAC ambiguity code in the sequence; those hits carry
+the indices of the variants involved in :attr:<code>Hit.variants</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.MotifScanner.scan_fasta" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan_fasta</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner.scan_fasta" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan_fasta(filename: str | PathLike[str], **kwargs) -&gt; Iterator[Hit]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Scan every record of a FASTA (or plain-text) sequence file.</p>
+<p>Records are read and scanned one at a time, so this streams rather than
+holding every hit in memory at once.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.MotifScanner.scan_best_hits" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scan_best_hits</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner.scan_best_hits" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">scan_best_hits(seq: str | bytes, target: int, *, sequence_name: str = '', iterations: int = 10, mult: int = 2, limit_mult: int = 10) -&gt; list[Hit]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return roughly the <code>target</code> highest-scoring occurrences per motif.</p>
+<p>No threshold is needed -- one is searched for -- so this works on a
+scanner built without <code>p_value</code> or <code>threshold</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.MotifScanner.count" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">count</span>
+
+
+<a href="#motifmatchpy.api.MotifScanner.count" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">count(seq: str | bytes, *, max_hits: int | None = None) -&gt; list[int]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Occurrences per motif, in the order of :attr:<code>motifs</code>.</p>
+<p>Counts both strands when the scanner does. Cheaper than :meth:<code>scan</code>
+because no hit objects are built.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy.api.Hit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy.api.Hit</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Hit" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">Hit(motif: Motif, pos: int, strand: str, score: float, sequence_name: str = '', variants: tuple[Variant, ...] = ())</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>One motif occurrence.</p>
+<p><code>variants</code> is empty for an ordinary hit. It is populated for a hit that
+exists only once one or more sequence variants are applied, in which case
+:attr:<code>pos</code> is relative to the <em>modified</em> sequence.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Hit.name" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">name</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Hit.name" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">name: str</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Name of the motif that matched.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="motifmatchpy.api.Hit.end" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">end</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#motifmatchpy.api.Hit.end" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">end: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Position one past the last matched base.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.Hit.matched_sequence" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">matched_sequence</span>
+
+
+<a href="#motifmatchpy.api.Hit.matched_sequence" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">matched_sequence(seq: str) -&gt; str</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The stretch of <code>seq</code> this hit covers, as it appears in <code>seq</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.api.Hit.variant_sequence" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">variant_sequence</span>
+
+
+<a href="#motifmatchpy.api.Hit.variant_sequence" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">variant_sequence(seq: str) -&gt; str</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The matched stretch with this hit's variant alleles applied.</p>
+<p>Substituted bases are upper case against a lower-case background. Only
+substitutions are rendered: an insertion or deletion shifts every
+following position, so the modified sequence no longer lines up with
+<code>seq</code> and cannot be reconstructed from a single window of it.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="motifmatchpy.api.read_motifs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">motifmatchpy.api.read_motifs</span>
+
+
+<a href="#motifmatchpy.api.read_motifs" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">read_motifs(filenames: Iterable[str | PathLike[str]], *, bg: Sequence[float] | None = None, pseudocount: float = 0.01, log_base: float | None = None, log_odds: bool = True, alphabet_size: int = 4, names: Sequence[str] | None = None) -&gt; list[Motif]</code></pre>
+
+    <div class="doc doc-contents first">
+
+        <p>Read several matrix files into :class:<code>Motif</code> objects.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="motifmatchpy.api.read_motif_file" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">motifmatchpy.api.read_motif_file</span>
+
+
+<a href="#motifmatchpy.api.read_motif_file" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">read_motif_file(filename: str | PathLike[str], **kwargs) -&gt; Motif</code></pre>
+
+    <div class="doc doc-contents first">
+
+        <p>Alias for :meth:<code>Motif.from_file</code>.</p>
+
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../advanced/" class="btn btn-neutral float-left" title="Advanced models"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../scan/" class="btn btn-neutral float-right" title="Scanning">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../../advanced/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../scan/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

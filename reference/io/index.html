@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/io/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Sequence I/O - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Sequence I/O";
+        var mkdocs_page_input_path = "reference/io.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/io/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Sequence I/O</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.io">io</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.io.read_fasta">read_fasta</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.io.read_sequences">read_sequences</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.io.open_text">open_text</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">Sequence I/O</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/io.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="sequence-io">Sequence I/O<a class="headerlink" href="#sequence-io" title="Permanent link">&para;</a></h1>
+<p><code>read_fasta</code> and <code>read_sequences</code> are also exported from <code>motifmatchpy</code>.
+They yield <code>(name, sequence)</code> pairs. Compression is detected from file contents.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="motifmatchpy.io" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">motifmatchpy.io</span>
+
+
+<a href="#motifmatchpy.io" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Reading sequence files.</p>
+<p>Handles FASTA and plain-text sequence files, transparently gzip-compressed.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.io.read_fasta" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">read_fasta</span>
+
+
+<a href="#motifmatchpy.io.read_fasta" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">read_fasta(filename: str | PathLike[str], *, full_header: bool = False) -&gt; Iterator[tuple[str, str]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Yield <code>(name, sequence)</code> for each record in a FASTA file.</p>
+<p>The name is the sequence identifier: the header up to the first whitespace,
+following the usual convention that anything after it is free-text
+description. Pass <code>full_header=True</code> to keep the whole header line.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.io.read_sequences" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">read_sequences</span>
+
+
+<a href="#motifmatchpy.io.read_sequences" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">read_sequences(filename: str | PathLike[str], *, full_header: bool = False) -&gt; Iterator[tuple[str, str]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Yield <code>(name, sequence)</code> from a FASTA <em>or</em> plain-text sequence file.</p>
+<p>A plain-text file is treated as a single record named after the file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.io.open_text" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">open_text</span>
+
+
+<a href="#motifmatchpy.io.open_text" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">open_text(filename: str | PathLike[str]) -&gt; _io.TextIOBase</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Open a possibly gzip-compressed text file.</p>
+<p>Compression is detected from the file's magic bytes rather than its name,
+so a gzipped file called <code>.fa</code> still works.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../parsers/" class="btn btn-neutral float-left" title="Parsers"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../misc/" class="btn btn-neutral float-right" title="Low-level helpers">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../parsers/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../misc/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

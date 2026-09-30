@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/compatibility/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Compatibility and troubleshooting - motifmatchpy</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Compatibility and troubleshooting";
+        var mkdocs_page_input_path = "compatibility.md";
+        var mkdocs_page_url = "/motifmatchpy/compatibility/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/types/">Result types</a>
+                  </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Compatibility and troubleshooting</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#relationship-to-moods">Relationship to MOODS</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#no-hits">No hits</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#different-results-between-cli-and-python">Different results between CLI and Python</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#slow-first-scan-or-high-memory-usage">Slow first scan or high memory usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#matrix-parsing-errors">Matrix parsing errors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reporting-a-problem">Reporting a problem</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Compatibility and troubleshooting</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/compatibility.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="compatibility-and-troubleshooting">Compatibility and troubleshooting<a class="headerlink" href="#compatibility-and-troubleshooting" title="Permanent link">&para;</a></h1>
+<h2 id="relationship-to-moods">Relationship to MOODS<a class="headerlink" href="#relationship-to-moods" title="Permanent link">&para;</a></h2>
+<p>motifmatchpy implements the main MOODS 1.9.4.1 C++ algorithm families, including
+multi-matrix DNA scanning, higher-order scoring, p-value thresholds, approximate
+best hits, and variant matching. It adds a high-level Python API and the
+<code>scan</code>, <code>threshold</code>, and <code>info</code> subcommands.</p>
+<p>The bundled <code>reference/</code> is a <strong>patched</strong>, development-only C++ test oracle. It
+is not a runtime dependency or an unmodified upstream binary. Corrections
+include boundary matches, high-order threshold handling, and explicit ADM log
+bases. The exact changes are recorded in
+<a href="https://github.com/lzj1769/motifmatchpy/blob/main/reference/core/VENDORED.md">VENDORED.md</a>.
+Do not assume universal bit-for-bit equality with unmodified upstream binaries.</p>
+<p>The low-level modules have familiar MOODS names, but this is not a drop-in
+replacement for every SWIG type, overloaded signature, or <code>moods-dna.py</code> option.
+Use the documented Python signatures and CLI options. In particular, CLI
+best-hits does not chain into SNP scanning; use a fixed cutoff for variants.</p>
+<h2 id="no-hits">No hits<a class="headerlink" href="#no-hits" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Check <code>info</code>: is the threshold above the motif's maximum score?</li>
+<li>Check whether you passed counts as <code>-S</code> or scores as <code>-m</code> accidentally.</li>
+<li>Try the <a href="../quickstart/">tiny example</a> to verify installation.</li>
+<li>Check sequence length, unknown bases, and <code>-R</code> strand filtering.</li>
+<li>Remember that very small p-values can exclude every position.</li>
+</ul>
+<h2 id="different-results-between-cli-and-python">Different results between CLI and Python<a class="headerlink" href="#different-results-between-cli-and-python" title="Permanent link">&para;</a></h2>
+<p>Align the matrix conversion background, threshold background, pseudocount,
+logarithm base, p-value precision, strands, and IUPAC behavior. CLI p-value scans
+estimate background per record by default; Python uses a fixed uniform
+background. CLI cutoff scans include IUPAC alternatives by default; Python's
+<code>scan()</code> requires <code>include_variants=True</code>.</p>
+<p>CSV/TSV scores have six significant digits, whereas Python retains full
+floating-point values. Positions are zero-based, and reverse-strand match text
+stays in the input orientation.</p>
+<h2 id="slow-first-scan-or-high-memory-usage">Slow first scan or high memory usage<a class="headerlink" href="#slow-first-scan-or-high-memory-usage" title="Permanent link">&para;</a></h2>
+<p>The first scan can compile Numba kernels. Reuse the scanner and compare warm
+runs separately from compilation. Larger lookup windows, high-order matrices,
+more permissive cutoffs, and larger threshold precision can consume more
+memory. Start with the default window and precision, and use a fixed background
+when appropriate.</p>
+<h2 id="matrix-parsing-errors">Matrix parsing errors<a class="headerlink" href="#matrix-parsing-errors" title="Permanent link">&para;</a></h2>
+<p>PFM input must have four numeric rows for DNA. Row labels and brackets are not
+supported. ADM input needs 16 conditional rows plus four nonempty initial-term
+rows. Higher-order numeric score matrices should be constructed through the
+Python API rather than treated as ordinary PFM files.</p>
+<h2 id="reporting-a-problem">Reporting a problem<a class="headerlink" href="#reporting-a-problem" title="Permanent link">&para;</a></h2>
+<p>Open an <a href="https://github.com/lzj1769/motifmatchpy/issues">issue</a> with the package
+version, Python/platform details, exact command or small script, minimal matrix
+and sequence inputs, and expected versus observed results. For upstream
+comparisons, include the MOODS version, compiler settings, and whether the
+reference contains patches.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../reference/types/" class="btn btn-neutral float-left" title="Result types"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../development/" class="btn btn-neutral float-right" title="Contributing and publishing docs">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../reference/types/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../development/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

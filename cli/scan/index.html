@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/cli/scan/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>scan - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "scan";
+        var mkdocs_page_input_path = "cli/scan.md";
+        var mkdocs_page_url = "/motifmatchpy/cli/scan/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Common options</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">scan</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#options">Options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#p-value-scan">P-value scan</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bed-output-and-forward-strand-only">BED output and forward strand only</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#approximate-best-hits">Approximate best hits</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#output-columns">Output columns</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Command line</li>
+      <li class="breadcrumb-item active">scan</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/cli/scan.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="scan">scan<a class="headerlink" href="#scan" title="Permanent link">&para;</a></h1>
+<p>Find motif occurrences in one or more FASTA or plain-text files, including gzip
+input. Select <strong>exactly one</strong> cutoff: <code>-p</code>, <code>-t</code>, or <code>-B</code>.</p>
+<pre><code class="language-sh">motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
+  -t 6 --header
+</code></pre>
+<p>This returns positions 0 and 6 on <code>+</code>, and position 1 on <code>-</code>.
+See the <a href="../../quickstart/">quick start</a> for the exact CSV output.</p>
+<h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
+<p>In addition to the <a href="../">shared matrix/output options</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-s</code>, <code>--sequences FILE ...</code></td>
+<td>Required sequence files; records are processed individually</td>
+</tr>
+<tr>
+<td><code>-p</code>, <code>--p-value P</code></td>
+<td>Derive a score cutoff; <code>0 &lt; P &lt;= 1</code></td>
+</tr>
+<tr>
+<td><code>-t</code>, <code>--threshold T</code></td>
+<td>Report scores at least T, using the matrix's score units</td>
+</tr>
+<tr>
+<td><code>-B</code>, <code>--best-hits N</code></td>
+<td>Search for approximately N matches per motif and strand, per record</td>
+</tr>
+<tr>
+<td><code>-R</code>, <code>--no-rc</code></td>
+<td>Search only the supplied strand</td>
+</tr>
+<tr>
+<td><code>--no-snps</code></td>
+<td>Disable extra matches from IUPAC alternatives</td>
+</tr>
+<tr>
+<td><code>--max-hits N</code></td>
+<td>Stop collecting ordinary hits after N per motif/strand; keep the first hits</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td>Keep <code>--bg</code> fixed for p-value thresholds across records</td>
+</tr>
+<tr>
+<td><code>--bg pA pC pG pT</code></td>
+<td>Threshold background; uniform by default</td>
+</tr>
+<tr>
+<td><code>--threshold-precision X</code></td>
+<td>Dynamic-programming discretization precision; default 2000</td>
+</tr>
+<tr>
+<td><code>-v</code>, <code>--verbose</code></td>
+<td>Write progress to stderr; <code>-vv</code> includes match counts</td>
+</tr>
+</tbody>
+</table>
+<p>The default search checks both strands. With <code>-p</code> or <code>-t</code>, IUPAC alternatives
+are included unless <code>--no-snps</code> is set. Unknown bases break ordinary matches.
+<code>N</code> is not expanded into all four bases; see <a href="../../formats/">file formats</a>.</p>
+<h2 id="p-value-scan">P-value scan<a class="headerlink" href="#p-value-scan" title="Permanent link">&para;</a></h2>
+<pre><code class="language-sh">motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \
+  -p 0.02 --batch --no-snps --header -o hits.csv
+</code></pre>
+<p>This converts counts to natural-log scores, uses a uniform background for both
+conversion and threshold calculation, and writes three ordinary matches.
+Without <code>--batch</code>, sequence composition changes the threshold for each record.</p>
+<h2 id="bed-output-and-forward-strand-only">BED output and forward strand only<a class="headerlink" href="#bed-output-and-forward-strand-only" title="Permanent link">&para;</a></h2>
+<pre><code class="language-sh">motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
+  -t 6 -R -f bed -o hits.bed
+</code></pre>
+<pre><code class="language-text">toy 0   3   toy.scores  6   +
+toy 6   9   toy.scores  6   +
+</code></pre>
+<p>BED coordinates are zero-based and half-open. The fifth column contains the raw
+motif score, <strong>not</strong> a normalized integer from 0 to 1000. Some BED consumers
+require rescaling. Omit <code>--header</code> for conventional BED input to other tools.</p>
+<h2 id="approximate-best-hits">Approximate best hits<a class="headerlink" href="#approximate-best-hits" title="Permanent link">&para;</a></h2>
+<pre><code class="language-sh">motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
+  -B 1 --header
+</code></pre>
+<p>This searches a score threshold rather than sorting and truncating to exactly N
+rows. Ties can yield extra hits, and very common motifs may be abandoned.
+The target is applied independently to each searched strand, not to a pooled
+top-N list. Best-hits estimates its own sequence background.</p>
+<p><code>-B</code> does not run the IUPAC variant scan and does not apply <code>--max-hits</code>.
+With <code>-p</code> or <code>-t</code>, <code>--max-hits</code> limits ordinary hits, not additional variant hits.
+For variant analysis, use <code>-p</code> or <code>-t</code>, or the low-level
+<a href="../../advanced/#explicit-variants">variant API</a>.</p>
+<h2 id="output-columns">Output columns<a class="headerlink" href="#output-columns" title="Permanent link">&para;</a></h2>
+<p>CSV/TSV columns, in order: <code>sequence</code>, <code>motif</code>, <code>pos</code>, <code>strand</code>, <code>score</code>,
+<code>match</code>, <code>variant_match</code>. The last field is empty for ordinary hits. The matched
+bases are shown in input-sequence orientation even for <code>-</code> hits.</p>
+<p>BED columns: <code>chrom</code>, <code>start</code>, <code>end</code>, <code>name</code>, <code>score</code>, <code>strand</code>. BED omits variant
+details; use CSV/TSV to retain them. Coordinates and interpretation are described
+in <a href="../../formats/">file formats</a>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Common options"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../threshold/" class="btn btn-neutral float-right" title="threshold">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../threshold/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

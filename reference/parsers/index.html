@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/parsers/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Parsers - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Parsers";
+        var mkdocs_page_input_path = "reference/parsers.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/parsers/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Parsers</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.parsers">parsers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.ParseError">ParseError</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.pfm">pfm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.pfm_to_log_odds">pfm_to_log_odds</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.adm_1o_terms">adm_1o_terms</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.adm_0o_terms">adm_0o_terms</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.adm_to_log_odds">adm_to_log_odds</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.parsers.read_table">read_table</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">Parsers</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/parsers.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="matrix-parsers">Matrix parsers<a class="headerlink" href="#matrix-parsers" title="Permanent link">&para;</a></h1>
+<p>These functions read numeric matrices and ADM terms. They do not parse a
+multi-motif JASPAR/MEME database. See <a href="../../formats/">file formats</a>.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="motifmatchpy.parsers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">motifmatchpy.parsers</span>
+
+
+<a href="#motifmatchpy.parsers" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Matrix file parsers.</p>
+<p>Two formats are understood, both plain whitespace-separated numbers:</p>
+<p><code>.pfm</code>
+    A JASPAR-style count matrix: one row per symbol (A, C, G, T), one column
+    per motif position.</p>
+<p><code>.adm</code>
+    An adjacent dinucleotide model: <code>a * a</code> rows of first-order conditional
+    terms, followed by <code>a</code> rows giving the zero-order terms for the first
+    position.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="motifmatchpy.parsers.ParseError" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">ParseError</span>
+
+
+<a href="#motifmatchpy.parsers.ParseError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="ValueError">ValueError</span></code></p>
+
+
+
+        <p>A matrix file could not be read in the requested format.</p>
+
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.pfm" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pfm</span>
+
+
+<a href="#motifmatchpy.parsers.pfm" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">pfm(filename: str | PathLike[str]) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read a count/frequency matrix without transforming it.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.pfm_to_log_odds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pfm_to_log_odds</span>
+
+
+<a href="#motifmatchpy.parsers.pfm_to_log_odds" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">pfm_to_log_odds(filename: str | PathLike[str], bg: Sequence[float], pseudocount: float = 0.01, log_base: float | None = None) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read a count matrix and convert it to a log-odds scoring matrix.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.adm_1o_terms" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">adm_1o_terms</span>
+
+
+<a href="#motifmatchpy.parsers.adm_1o_terms" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">adm_1o_terms(filename: str | PathLike[str], a: int = 4) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The <code>a * a</code> first-order conditional terms of an ADM file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.adm_0o_terms" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">adm_0o_terms</span>
+
+
+<a href="#motifmatchpy.parsers.adm_0o_terms" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">adm_0o_terms(filename: str | PathLike[str], a: int = 4) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The <code>a</code> zero-order terms of an ADM file, for the first position.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.adm_to_log_odds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">adm_to_log_odds</span>
+
+
+<a href="#motifmatchpy.parsers.adm_to_log_odds" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">adm_to_log_odds(filename: str | PathLike[str], bg: Sequence[float], pseudocount: float = 0.01, a: int = 4, log_base: float | None = None) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read an adjacent dinucleotide model and convert it to log-odds scores.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.parsers.read_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">read_table</span>
+
+
+<a href="#motifmatchpy.parsers.read_table" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">read_table(filename: str | PathLike[str]) -&gt; list[list[float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Read whitespace-separated numbers into a list of rows.</p>
+<p>A row stops at the first token that is not a number, and rows holding no
+numbers at all are dropped -- so blank lines and comment lines disappear
+rather than becoming empty rows. This mirrors how the C++ reader consumes a
+line with a stream of <code>double</code> extractions.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../tools/" class="btn btn-neutral float-left" title="Matrix utilities"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../io/" class="btn btn-neutral float-right" title="Sequence I/O">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../tools/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../io/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

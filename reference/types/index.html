@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/types/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Result types - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Result types";
+        var mkdocs_page_input_path = "reference/types.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/types/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Result types</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy._types.Match">Match</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy._types.Variant">Variant</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy._types.MatchWithVariant">MatchWithVariant</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">Result types</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/types.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="result-types">Result types<a class="headerlink" href="#result-types" title="Permanent link">&para;</a></h1>
+<p>Import these types from <code>motifmatchpy</code>, for example <code>from motifmatchpy import
+Variant</code>. They are immutable dataclasses. <code>Match</code> also supports unpacking into
+<code>pos, score</code>. See <a href="../../formats/">coordinate conventions</a> before interpreting
+indel results.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy._types.Match" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy._types.Match</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#motifmatchpy._types.Match" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">Match(pos: int, score: float)</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A motif occurrence: where it starts, and what it scored.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy._types.Variant" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy._types.Variant</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#motifmatchpy._types.Variant" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">Variant(start_pos: int, end_pos: int, modified_seq: str = '')</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A sequence edit: <code>[start_pos, end_pos)</code> replaced by <code>modified_seq</code>.</p>
+<p><code>end_pos == start_pos + 1</code> with a one-character replacement is a
+substitution, <code>end_pos == start_pos</code> an insertion, and an empty
+<code>modified_seq</code> a deletion.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="motifmatchpy._types.MatchWithVariant" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">motifmatchpy._types.MatchWithVariant</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#motifmatchpy._types.MatchWithVariant" class="headerlink" title="Permanent link">&para;</a></h2>
+<pre class="highlight"><code class="language-python doc-signature">MatchWithVariant(pos: int, score: float, variants: tuple[int, ...] = ())</code></pre>
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>An occurrence that exists only once some variants are applied.</p>
+<p><code>pos</code> is relative to the modified sequence, and <code>variants</code> holds indices
+into the variant list that was handed to the scanner.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../misc/" class="btn btn-neutral float-left" title="Low-level helpers"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../compatibility/" class="btn btn-neutral float-right" title="Compatibility and troubleshooting">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../misc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../compatibility/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

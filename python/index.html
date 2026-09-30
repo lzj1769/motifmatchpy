@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/python/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Python guide - motifmatchpy</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Python guide";
+        var mkdocs_page_input_path = "python.md";
+        var mkdocs_page_url = "/motifmatchpy/python/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Python guide</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#load-motifs-and-scan">Load motifs and scan</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#load-several-count-matrices">Load several count matrices</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configure-thresholds">Configure thresholds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#approximate-best-hits">Approximate best hits</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#iupac-variants">IUPAC variants</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Python guide</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/python.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="python-guide">Python guide<a class="headerlink" href="#python-guide" title="Permanent link">&para;</a></h1>
+<p>Examples run from the repository root and use the <a href="../quickstart/">bundled files</a>.
+The <a href="../reference/api/">API reference</a> includes signatures and method descriptions.</p>
+<h2 id="load-motifs-and-scan">Load motifs and scan<a class="headerlink" href="#load-motifs-and-scan" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">import motifmatchpy as mm
+
+motif = mm.Motif.from_file(&quot;docs/examples/toy.scores&quot;, log_odds=False)
+scanner = mm.MotifScanner([motif], threshold=6)
+sequence = &quot;ACGTTTACG&quot;
+
+for hit in scanner.scan(sequence, sequence_name=&quot;toy&quot;):
+    print(hit.name, hit.pos, hit.end, hit.strand, hit.score)
+# toy.scores 0 3 + 6.0
+# toy.scores 1 4 - 6.0
+# toy.scores 6 9 + 6.0
+
+assert scanner.count(sequence) == [3]
+</code></pre>
+<p><code>Motif</code> is immutable and holds a name and scoring matrix. Its properties include
+<code>order</code>, <code>width</code>, <code>length</code>, <code>min_score</code>, and <code>max_score</code>.
+<code>motif.reverse_complement()</code> creates the opposite-strand motif.</p>
+<p><code>MotifScanner</code> searches both strands by default. Results are <code>Hit</code> objects sorted
+by <code>(pos, motif.name, strand)</code>. <code>count()</code> returns counts in the order of the
+input motifs, combining strands. <code>scan(..., max_hits=N)</code> keeps the first ordinary
+hits per motif/strand rather than selecting the highest scores.</p>
+<h2 id="load-several-count-matrices">Load several count matrices<a class="headerlink" href="#load-several-count-matrices" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">import motifmatchpy as mm
+
+motifs = mm.read_motifs([&quot;docs/examples/toy.pfm&quot;], pseudocount=0.01)
+scanner = mm.MotifScanner(motifs, p_value=0.02, bg=&quot;flat&quot;)
+for hit in scanner.scan_fasta(&quot;docs/examples/toy.fa&quot;):
+    print(hit.sequence_name, hit.pos, hit.strand, hit.score)
+</code></pre>
+<p><code>read_motifs</code> accepts multiple PFM/ADM paths, with optional <code>names</code> for explicit
+motif labels. <code>scan_fasta()</code> reads one record at a time; it also accepts plain
+text and gzip files. Each record's hits are collected before they are yielded.</p>
+<h2 id="configure-thresholds">Configure thresholds<a class="headerlink" href="#configure-thresholds" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p_value=1e-4</code></td>
+<td>Calculate a cutoff per motif and searched strand</td>
+</tr>
+<tr>
+<td><code>threshold=6.0</code></td>
+<td>Apply the same absolute cutoff to every scoring matrix</td>
+</tr>
+<tr>
+<td>Neither cutoff</td>
+<td>Only <code>scan_best_hits</code> is available</td>
+</tr>
+<tr>
+<td><code>bg="flat"</code></td>
+<td>Fixed uniform threshold background; Python default</td>
+</tr>
+<tr>
+<td><code>bg=[0.3, 0.2, 0.2, 0.3]</code></td>
+<td>Fixed threshold background</td>
+</tr>
+<tr>
+<td><code>bg="auto"</code> with <code>p_value</code></td>
+<td>Recalculate background and thresholds for each sequence</td>
+</tr>
+<tr>
+<td><code>both_strands=False</code></td>
+<td>Search only the supplied motif orientation</td>
+</tr>
+<tr>
+<td><code>window_size=7</code></td>
+<td>Lookup window; larger windows consume more memory</td>
+</tr>
+<tr>
+<td><code>threshold_precision=2000</code></td>
+<td>Score discretization for threshold calculation</td>
+</tr>
+</tbody>
+</table>
+<p>Do not set both <code>p_value</code> and <code>threshold</code>. Python defaults to a fixed uniform
+background; the CLI's <code>scan -p</code> defaults to per-record estimation. To align them,
+use <code>bg="auto"</code> in Python or <code>--batch</code> in the CLI.</p>
+<p><code>scanner.thresholds()</code> reports forward-motif thresholds. With <code>bg="auto"</code>, pass
+a sequence, for example <code>scanner.thresholds("ACGTTTACG")</code>.
+The conversion background is specified separately when loading a <code>Motif</code>.</p>
+<h2 id="approximate-best-hits">Approximate best hits<a class="headerlink" href="#approximate-best-hits" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">import motifmatchpy as mm
+
+motif = mm.Motif.from_file(&quot;docs/examples/toy.scores&quot;, log_odds=False)
+scanner = mm.MotifScanner([motif])
+hits = scanner.scan_best_hits(&quot;ACGTTTACG&quot;, target=1)
+assert {(hit.pos, hit.strand) for hit in hits} == {(0, &quot;+&quot;), (1, &quot;-&quot;), (6, &quot;+&quot;)}
+</code></pre>
+<p>Targets are approximate and applied independently to each motif and strand.
+<code>iterations</code>, <code>mult</code>, and <code>limit_mult</code> tune the threshold search. This method
+does not add IUPAC variant matches.</p>
+<h2 id="iupac-variants">IUPAC variants<a class="headerlink" href="#iupac-variants" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">import motifmatchpy as mm
+
+motif = mm.Motif.from_file(&quot;docs/examples/toy.scores&quot;, log_odds=False)
+scanner = mm.MotifScanner([motif], threshold=6, both_strands=False)
+hits = scanner.scan(&quot;AWG&quot;, include_variants=True)
+assert hits == []  # W means A or T, so it cannot produce ACG.
+
+hits = scanner.scan(&quot;AYG&quot;, include_variants=True)
+assert len(hits) == 1  # Y means C or T; the C allele produces ACG.
+assert hits[0].variant_sequence(&quot;AYG&quot;) == &quot;aCg&quot;
+</code></pre>
+<p>Ordinary hits have an empty <code>variants</code> tuple. Variant hits contain <code>Variant</code>
+objects recording the substitutions used. <code>matched_sequence()</code> returns the
+slice of the supplied sequence; <code>variant_sequence()</code> renders substitutions in
+uppercase on a lowercase background. It does not reconstruct indels.</p>
+<h2 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h2>
+<p>Reuse a scanner when motifs and a fixed background stay unchanged. Setting up
+lookup tables can dominate short scans. Auto backgrounds require rebuilding
+thresholds and tables per record. Separate cold-start compilation time from
+warm-run scanning time when benchmarking. Use <code>count()</code> when only counts are
+needed, and avoid permissive cutoffs that generate very large hit lists.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cli/info/" class="btn btn-neutral float-left" title="info"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../formats/" class="btn btn-neutral float-right" title="File formats and coordinates">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../cli/info/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../formats/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

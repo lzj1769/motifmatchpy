@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/reference/misc/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Low-level helpers - motifmatchpy</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Low-level helpers";
+        var mkdocs_page_input_path = "reference/misc.md";
+        var mkdocs_page_url = "/motifmatchpy/reference/misc/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/">Common options</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../cli/info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Low-level helpers</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#motifmatchpy.misc">misc</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.shift">shift</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.mask">mask</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.q_gram_size">q_gram_size</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.rc_tuple">rc_tuple</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.preprocess_seq">preprocess_seq</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#motifmatchpy.misc.region_bounds">region_bounds</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API reference</li>
+      <li class="breadcrumb-item active">Low-level helpers</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/reference/misc.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="low-level-helpers">Low-level helpers<a class="headerlink" href="#low-level-helpers" title="Permanent link">&para;</a></h1>
+<p>These utilities expose the encoded-word and region operations used by the
+scanner. Most applications should use <code>MotifScanner</code> instead.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="motifmatchpy.misc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">motifmatchpy.misc</span>
+
+
+<a href="#motifmatchpy.misc" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Bit-level helpers shared by the scanning code (mirrors <code>MOODS.misc</code>).</p>
+<p>Matrices for models of order &gt; 0 have one row per <em>q</em>-gram rather than per
+symbol, and the scanners address those rows by packing <code>q</code> symbol codes into
+one integer, <code>shift(a)</code> bits each. These are the primitives for that packing.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.shift" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">shift</span>
+
+
+<a href="#motifmatchpy.misc.shift" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">shift(a: int) -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Bits needed to hold one symbol of an alphabet of size <code>a</code>.</p>
+<p>That is <code>ceil(log2(a))</code>: 2 for DNA.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.mask" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">mask</span>
+
+
+<a href="#motifmatchpy.misc.mask" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">mask(a: int) -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Bit mask covering one symbol of an alphabet of size <code>a</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.q_gram_size" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">q_gram_size</span>
+
+
+<a href="#motifmatchpy.misc.q_gram_size" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">q_gram_size(rows: int, a: int) -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>How many symbols each row of an <code>rows</code>-row matrix stands for.</p>
+<p>A 0-order matrix has <code>a</code> rows and so <code>q == 1</code>; a first-order one has
+<code>a**2</code> rows and <code>q == 2</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.rc_tuple" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">rc_tuple</span>
+
+
+<a href="#motifmatchpy.misc.rc_tuple" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">rc_tuple(code: int, a: int, q: int) -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Reverse complement of a packed <code>q</code>-gram.</p>
+<p>Complementing a symbol is <code>a - 1 - symbol</code>, and the symbols come back in
+the opposite order.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.preprocess_seq" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">preprocess_seq</span>
+
+
+<a href="#motifmatchpy.misc.preprocess_seq" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">preprocess_seq(s: str | bytes, a: int, alphabet_map: Sequence[int] | ndarray) -&gt; list[int]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Bounds of the maximal runs of <code>s</code> made only of alphabet symbols.</p>
+<p>Returns a flat list of alternating start and end offsets, so
+<code>[2, 7, 10, 12]</code> describes the regions <code>[2, 7)</code> and <code>[10, 12)</code>.
+Anything mapping to <code>a</code> or above -- <code>N</code>, say -- breaks a region, because
+a match may not span a base whose identity is unknown.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="motifmatchpy.misc.region_bounds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">region_bounds</span>
+
+
+<a href="#motifmatchpy.misc.region_bounds" class="headerlink" title="Permanent link">&para;</a></h3>
+<pre class="highlight"><code class="language-python doc-signature">region_bounds(codes: ndarray, a: int) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>:func:<code>preprocess_seq</code> on already-encoded symbol codes.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../io/" class="btn btn-neutral float-left" title="Sequence I/O"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../types/" class="btn btn-neutral float-right" title="Result types">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../io/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../types/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

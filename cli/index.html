@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://lzj1769.github.io/motifmatchpy/cli/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Common options - motifmatchpy</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Common options";
+        var mkdocs_page_input_path = "cli/index.md";
+        var mkdocs_page_url = "/motifmatchpy/cli/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> motifmatchpy
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Command line</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Common options</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#matrix-arguments-shared-by-all-subcommands">Matrix arguments shared by all subcommands</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#output-options">Output options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#two-different-backgrounds">Two different backgrounds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exit-status">Exit status</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="scan/">scan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="threshold/">threshold</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="info/">info</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../python/">Python guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../formats/">File formats and coordinates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced models</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/api/">High-level API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/scan/">Scanning</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/tools/">Matrix utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/parsers/">Parsers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/io/">Sequence I/O</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/misc/">Low-level helpers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/types/">Result types</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../compatibility/">Compatibility and troubleshooting</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../development/">Contributing and publishing docs</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">motifmatchpy</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Command line</li>
+      <li class="breadcrumb-item active">Common options</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/lzj1769/motifmatchpy/edit/main/docs/cli/index.md">Edit on lzj1769/motifmatchpy</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="command-line">Command line<a class="headerlink" href="#command-line" title="Permanent link">&para;</a></h1>
+<p>The three subcommands are <code>scan</code>, <code>threshold</code>, and <code>info</code>. Each accepts one or
+more matrix files. Commands in this guide run from the repository root.</p>
+<pre><code class="language-sh">motifmatchpy --version
+motifmatchpy --help
+motifmatchpy scan --help
+motifmatchpy threshold --help
+motifmatchpy info --help
+</code></pre>
+<h2 id="matrix-arguments-shared-by-all-subcommands">Matrix arguments shared by all subcommands<a class="headerlink" href="#matrix-arguments-shared-by-all-subcommands" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-m</code>, <code>--matrices FILE ...</code></td>
+<td>PFM counts or ADM terms; convert to log-odds</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>-S</code>, <code>--score-matrices FILE ...</code></td>
+<td>Numeric score matrices; do not convert</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>--ps P</code></td>
+<td>Pseudocount used during conversion</td>
+<td><code>0.01</code></td>
+</tr>
+<tr>
+<td><code>--lo-bg pA pC pG pT</code></td>
+<td>Background for log-odds conversion</td>
+<td><code>0.25 0.25 0.25 0.25</code></td>
+</tr>
+<tr>
+<td><code>--log-base X</code></td>
+<td>Logarithm base, greater than 1</td>
+<td>Natural logarithm</td>
+</tr>
+</tbody>
+</table>
+<p>Supply at least one file via <code>-m</code> or <code>-S</code>; both may be used together. Each file
+contains one motif. Shell globs such as <code>-m matrices/*.pfm</code> are supported through
+shell expansion. Motif names default to filenames including their suffixes.
+Conversion options do not transform matrices passed through <code>-S</code>.</p>
+<h2 id="output-options">Output options<a class="headerlink" href="#output-options" title="Permanent link">&para;</a></h2>
+<p>All subcommands support <code>-o/--output FILE</code>, <code>-f/--format csv|tsv</code>, <code>--header</code>,
+and <code>--sep S</code>. Output goes to stdout as CSV without a header unless specified.
+<code>scan</code> additionally supports <code>-f bed</code>. <code>--sep</code> accepts a single separator
+character and overrides the selected format's separator.</p>
+<pre><code class="language-sh">motifmatchpy info -m docs/examples/toy.pfm -f tsv --header -o motifs.tsv
+</code></pre>
+<p>Scores are printed with <strong>six significant digits</strong>. Use the Python API when
+retaining full floating-point precision matters. Files passed to <code>-o</code> are
+overwritten; parent directories must already exist.</p>
+<h2 id="two-different-backgrounds">Two different backgrounds<a class="headerlink" href="#two-different-backgrounds" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>--lo-bg</code> determines how input counts become log-odds scores.</li>
+<li><code>--bg</code> determines the score distribution used for p-value thresholds.</li>
+</ul>
+<p>For <code>scan -p</code>, the default is to estimate the threshold background separately
+for each sequence record. Add <code>--batch</code> to use <code>--bg</code> for every record. Setting
+<code>--bg</code> alone does <strong>not</strong> override this per-record estimation. <code>threshold</code> always
+uses its <code>--bg</code> argument and has no <code>--batch</code> option.</p>
+<pre><code class="language-sh">motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \
+  -p 0.02 --batch --bg 0.3 0.2 0.2 0.3 --lo-bg 0.3 0.2 0.2 0.3
+</code></pre>
+<p>Backgrounds follow A, C, G, T order; use positive probabilities summing to one.
+For reproducible thresholds, record both backgrounds, pseudocount, logarithm
+base, p-value, and threshold precision.</p>
+<h2 id="exit-status">Exit status<a class="headerlink" href="#exit-status" title="Permanent link">&para;</a></h2>
+<p>Success returns 0; handled argument or input errors return 2; an interrupt
+returns 130. Calling <code>motifmatchpy</code> without a subcommand prints help and returns
+1. A successful scan can have no matches. Use <code>--header</code> to distinguish an empty
+result table from an absent output file.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quick start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="scan/" class="btn btn-neutral float-right" title="scan">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/lzj1769/motifmatchpy" class="fa fa-code-fork" style="color: #fcfcfc"> lzj1769/motifmatchpy</a>
+        </span>
+    
+    
+      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="scan/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
