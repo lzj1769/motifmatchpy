@@ -106,6 +106,20 @@ given strand only, `--no-snps` ignores ambiguity codes, and `--batch` keeps the
 thresholds fixed instead of re-deriving them from each sequence. `motifmatchpy
 scan -h` lists the rest.
 
+### ATAC-seq peaks and JASPAR collections
+
+```sh
+motifmatchpy scan --regions atac_peaks.bed --genome hg38.fa \
+  -m motifs.jaspar -p 1e-4 -o motif_hits.bed
+```
+
+This scans each peak on both strands and writes one BED6 row per hit with
+zero-based genomic coordinates. `-m/--matrices` auto-detects JASPAR, MEME, TRANSFAC, PFM and ADM by content,
+including multi-motif collections.
+Peak mode defaults to BED, a uniform background, and `p=1e-4`; scores remain raw
+log-odds. Overlapping peaks are scanned independently and can produce duplicate
+hits. See the [complete peak workflow](docs/peaks.md) for examples and input rules.
+
 ## File formats
 
 `.pfm`
@@ -116,8 +130,9 @@ scan -h` lists the rest.
 : An adjacent dinucleotide model: 16 rows of first-order conditional terms
   followed by 4 rows of zero-order terms for the first position.
 
-The format is taken from the suffix where possible and otherwise detected by
-trying both, so a mislabelled file still reads.
+Formats are detected from content, independent of the filename suffix. JASPAR,
+MEME text, and TRANSFAC collections are accepted by `-m`; numeric PFM/ADM scores
+can be supplied via `-S`. See [supported formats](docs/formats.md).
 
 ## Performance
 

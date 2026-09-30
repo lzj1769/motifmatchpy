@@ -12,8 +12,9 @@ import csv
 import sys
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
+from pathlib import Path
 
-from . import __version__, tools
+from . import __version__, _regions, tools
 from . import io as _io
 from .api import Hit, Motif, MotifScanner, read_motifs
 
@@ -70,11 +71,12 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="FILE",
         nargs="+",
         default=[],
-        required=True,
-        help="FASTA or plain-text sequence files (may be gzipped)",
+        help="FASTA or plain-text sequence files; alternative to --regions/--genome",
     )
+    scan_p.add_argument("--regions", metavar="BED", help="scan intervals from a BED3+ region list")
+    scan_p.add_argument("--genome", metavar="FASTA", help="reference FASTA for --regions")
 
-    cutoff = scan_p.add_argument_group("score cutoff (exactly one required)")
+    cutoff = scan_p.add_argument_group("score cutoff (choose one; regions default to -p 1e-4)")
     cutoff.add_argument(
         "-p", "--p-value", metavar="P", type=float,
         help="report matches whose false-positive rate is at most P",
@@ -91,8 +93,8 @@ def build_parser() -> argparse.ArgumentParser:
     out = scan_p.add_argument_group("output")
     out.add_argument("-o", "--output", metavar="FILE", help="write here instead of stdout")
     out.add_argument(
-        "-f", "--format", choices=("csv", "tsv", "bed"), default="csv",
-        help="output format (default: csv)",
+        "-f", "--format", choices=("csv", "tsv", "bed"), default=None,
+        help="output format (default: bed with --regions, otherwise csv)",
     )
     out.add_argument("--sep", metavar="S", help="override the field separator")
     out.add_argument("--header", action="store_true", help="write a header line")
@@ -112,8 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     behaviour.add_argument(
         "--batch", action="store_true",
-        help="use --bg for every sequence instead of re-estimating the "
-             "background, and so the thresholds, per sequence",
+        help="use --bg for every sequence (always enabled in peak mode)",
     )
     behaviour.add_argument(
         "--bg", metavar=("pA", "pC", "pG", "pT"), nargs=4, type=float,
@@ -184,7 +185,7 @@ def _add_matrix_arguments(parser: argparse.ArgumentParser) -> None:
     group = parser.add_argument_group("matrices (at least one required)")
     group.add_argument(
         "-m", "--matrices", metavar="FILE", nargs="+", default=[],
-        help="count matrices (.pfm) or dinucleotide models (.adm), "
+        help="auto-detected PFM, ADM, JASPAR, MEME or TRANSFAC matrices, "
              "converted to log-odds scores before matching",
     )
     group.add_argument(
@@ -263,6 +264,16 @@ def _log(args: argparse.Namespace, level: int, message: str) -> None:
 # commands
 # ----------------------------------------------------------------------
 def cmd_scan(args: argparse.Namespace) -> int:
+    region_mode = args.regions is not None
+    if region_mode != (args.genome is not None):
+        raise UsageError("--regions and --genome must be given together")
+    if region_mode and args.sequences:
+        raise UsageError("use either -s or --regions with --genome, not both")
+    if not region_mode and not args.sequences:
+        raise UsageError("provide -s or --regions with --genome")
+    args.format = args.format or ("bed" if region_mode else "csv")
+    if region_mode and all(v is None for v in (args.p_value, args.threshold, args.best_hits)):
+        args.p_value = 1e-4
     cutoffs = [args.p_value is not None, args.threshold is not None, args.best_hits is not None]
     if sum(cutoffs) == 0:
         raise UsageError("no score cutoff given (use -p, -t or -B)")
@@ -278,10 +289,10 @@ def cmd_scan(args: argparse.Namespace) -> int:
     motifs = _load_motifs(args)
     _log(args, 1, f"read {len(motifs)} matrices")
 
-    # Without --batch a p-value threshold is recomputed from each sequence's own
-    # base composition, which is what moods-dna does by default.
+    # Whole-sequence mode retains MOODS-style per-record estimation. Peak mode
+    # uses a fixed background so thousands of short peaks share lookup tables.
     background: Sequence[float] | str
-    if args.p_value is not None and not args.batch:
+    if args.p_value is not None and not args.batch and not region_mode:
         background = "auto"
     else:
         background = args.bg
@@ -295,34 +306,55 @@ def cmd_scan(args: argparse.Namespace) -> int:
         threshold_precision=args.threshold_precision,
     )
 
+    try:
+        peaks = _regions.read_peaks(args.regions) if region_mode else {}
+        if args.output:
+            inputs = [*args.sequences, *args.matrices, *args.score_matrices]
+            if region_mode:
+                inputs.extend([args.regions, args.genome])
+            if any(Path(args.output).resolve() == Path(path).resolve() for path in inputs):
+                raise ValueError("output file must not overwrite an input file")
+    except (OSError, ValueError) as exc:
+        raise UsageError(str(exc)) from exc
+
+    def records():
+        if region_mode:
+            _log(args, 1, f"read {sum(map(len, peaks.values()))} peaks; streaming {args.genome}")
+            for region, seq in _regions.peak_sequences(args.genome, peaks):
+                yield region.chrom, seq, region.start
+        else:
+            for path in args.sequences:
+                _log(args, 1, f"reading {path}")
+                for name, seq in _io.read_sequences(path):
+                    yield name, seq, 0
+
     written = 0
     with _output(args.output) as out:
         writer = _writer(out, args)
         if args.header:
             writer.writerow(BED_COLUMNS if args.format == "bed" else SCAN_COLUMNS)
 
-        for path in args.sequences:
-            _log(args, 1, f"reading {path}")
-            try:
-                records = _io.read_sequences(path)
-                for name, seq in records:
-                    _log(args, 1, f"scanning {name} ({len(seq)} bp)")
-                    if args.best_hits is not None:
-                        hits = scanner.scan_best_hits(
-                            seq, args.best_hits, sequence_name=name
-                        )
-                    else:
-                        hits = scanner.scan(
-                            seq,
-                            sequence_name=name,
-                            max_hits=args.max_hits,
-                            include_variants=not args.no_snps,
-                        )
-                    _log(args, 2, f"{len(hits)} matches in {name}")
-                    writer.writerows(_hit_row(hit, seq, args.format) for hit in hits)
-                    written += len(hits)
-            except OSError as exc:
-                raise UsageError(f"could not read sequence file {path}: {exc}") from exc
+        try:
+            for name, seq, offset in records():
+                _log(args, 1, f"scanning {name} ({len(seq)} bp)")
+                if args.best_hits is not None:
+                    hits = scanner.scan_best_hits(
+                        seq, args.best_hits, sequence_name=name
+                    )
+                else:
+                    hits = scanner.scan(
+                        seq,
+                        sequence_name=name,
+                        max_hits=args.max_hits,
+                        include_variants=not args.no_snps,
+                    )
+                _log(args, 2, f"{len(hits)} matches in {name}")
+                writer.writerows(_hit_row(hit, seq, args.format, offset) for hit in hits)
+                written += len(hits)
+        except OSError as exc:
+            raise UsageError(f"could not read sequence input or write results: {exc}") from exc
+        except ValueError as exc:
+            raise UsageError(str(exc)) from exc
 
     _log(args, 1, f"{written} matches in total")
     return 0
@@ -384,12 +416,12 @@ def _num(value: float) -> str:
     return f"{value:.6g}"
 
 
-def _hit_row(hit: Hit, seq: str, fmt: str) -> tuple[str, ...]:
+def _hit_row(hit: Hit, seq: str, fmt: str, offset: int = 0) -> tuple[str, ...]:
     if fmt == "bed":
         return (
             hit.sequence_name,
-            str(hit.pos),
-            str(hit.end),
+            str(hit.pos + offset),
+            str(hit.end + offset),
             hit.name,
             _num(hit.score),
             hit.strand,
@@ -397,7 +429,7 @@ def _hit_row(hit: Hit, seq: str, fmt: str) -> tuple[str, ...]:
     return (
         hit.sequence_name,
         hit.name,
-        str(hit.pos),
+        str(hit.pos + offset),
         hit.strand,
         _num(hit.score),
         hit.matched_sequence(seq),

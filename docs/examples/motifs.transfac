@@ -1,0 +1,12 @@
+VV EXAMPLE
+XX
+//
+AC MA0000.1
+ID TEST
+DE test motif
+P0 A C G T
+01 10 0 0 0 A
+02 0 10 0 0 C
+03 0 0 10 0 G
+XX
+//

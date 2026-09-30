@@ -120,12 +120,11 @@ def test_ragged_matrix_is_a_parse_error(tmp_path):
         parsers.pfm(path)
 
 
-def test_binary_file_is_a_parse_error(tmp_path):
-    """A gzipped matrix is not transparently decompressed, and must not crash."""
+def test_gzipped_numeric_matrix_is_decompressed(tmp_path):
+    """Compression is detected by content, just as for motif collections."""
     path = tmp_path / "compressed.pfm.gz"
     path.write_bytes(gzip.compress(b"1 2\n3 4\n5 6\n7 8\n"))
-    with pytest.raises(ParseError, match="could not parse"):
-        parsers.pfm(path)
+    assert parsers.pfm(path) == [[1, 2], [3, 4], [5, 6], [7, 8]]
 
 
 def test_adm_with_the_wrong_row_count_is_a_parse_error(pfm_file):

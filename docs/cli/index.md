@@ -15,21 +15,27 @@ motifmatchpy info --help
 
 | Option | Meaning | Default |
 | --- | --- | --- |
-| `-m`, `--matrices FILE ...` | PFM counts or ADM terms; convert to log-odds | None |
+| `-m`, `--matrices FILE ...` | Auto-detect PFM, ADM, JASPAR, MEME, TRANSFAC; convert to log-odds | None |
 | `-S`, `--score-matrices FILE ...` | Numeric score matrices; do not convert | None |
 | `--ps P` | Pseudocount used during conversion | `0.01` |
 | `--lo-bg pA pC pG pT` | Background for log-odds conversion | `0.25 0.25 0.25 0.25` |
 | `--log-base X` | Logarithm base, greater than 1 | Natural logarithm |
 
-Supply at least one file via `-m` or `-S`; both may be used together. Each file
-contains one motif. Shell globs such as `-m matrices/*.pfm` are supported through
-shell expansion. Motif names default to filenames including their suffixes.
+Supply files via `-m` or `-S`; they may be combined. `-m` accepts multiple
+files, and JASPAR/MEME/TRANSFAC files may each contain multiple motifs. Detection
+uses content rather than filenames, including for gzip input. Shell globs such
+as `-m matrices/*.pfm` are expanded by the shell. Numeric tables use filenames
+as motif names; collections use record IDs and names.
+
+`-S` accepts numeric score tables without conversion. Count/probability
+collections passed to `-S` are rejected to avoid mistaking counts for scores.
 Conversion options do not transform matrices passed through `-S`.
 
 ## Output options
 
 All subcommands support `-o/--output FILE`, `-f/--format csv|tsv`, `--header`,
-and `--sep S`. Output goes to stdout as CSV without a header unless specified.
+and `--sep S`. Output goes to stdout as CSV without a header unless specified;
+`scan --regions` defaults to BED instead.
 `scan` additionally supports `-f bed`. `--sep` accepts a single separator
 character and overrides the selected format's separator.
 
@@ -46,10 +52,11 @@ overwritten; parent directories must already exist.
 - `--lo-bg` determines how input counts become log-odds scores.
 - `--bg` determines the score distribution used for p-value thresholds.
 
-For `scan -p`, the default is to estimate the threshold background separately
+For `scan -s ... -p`, the default is to estimate the threshold background separately
 for each sequence record. Add `--batch` to use `--bg` for every record. Setting
 `--bg` alone does **not** override this per-record estimation. `threshold` always
-uses its `--bg` argument and has no `--batch` option.
+uses its `--bg` argument and has no `--batch` option. Peak scans always use
+the fixed `--bg`; see the [ATAC-seq workflow](../peaks.md).
 
 ```sh
 motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \

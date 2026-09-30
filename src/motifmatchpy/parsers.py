@@ -1,6 +1,6 @@
 """Matrix file parsers.
 
-Two formats are understood, both plain whitespace-separated numbers:
+PFM/ADM tables and JASPAR, MEME text, and TRANSFAC collections are supported:
 
 ``.pfm``
     A JASPAR-style count matrix: one row per symbol (A, C, G, T), one column
@@ -10,16 +10,27 @@ Two formats are understood, both plain whitespace-separated numbers:
     An adjacent dinucleotide model: ``a * a`` rows of first-order conditional
     terms, followed by ``a`` rows giving the zero-order terms for the first
     position.
+
+JASPAR collections
+    One or more ``>ID NAME`` records, each with four A/C/G/T count rows,
+    optionally labelled and bracketed. Read these with :func:`jaspar`.
+
+MEME / TRANSFAC
+    Position-oriented DNA matrices, transposed to A/C/G/T rows by :func:`meme`
+    and :func:`transfac`. MEME probabilities are scaled by their site count.
 """
 
 from __future__ import annotations
 
+import math
 import os
+import re
 from collections.abc import Sequence
 from pathlib import Path
 
-from . import tools
+from . import _formats, tools
 from ._util import as_path, check_bg
+from .io import open_text
 
 __all__ = [
     "pfm",
@@ -29,11 +40,97 @@ __all__ = [
     "adm_to_log_odds",
     "read_table",
     "ParseError",
+    "jaspar",
+    "meme",
+    "transfac",
+    "detect_format",
 ]
 
 
 class ParseError(ValueError):
     """A matrix file could not be read in the requested format."""
+
+
+def detect_format(filename: str | os.PathLike[str]) -> str:
+    """Detect JASPAR, MEME, TRANSFAC or numeric PFM/ADM input by content."""
+    try:
+        return _formats.detect_format(as_path(filename))
+    except ValueError as exc:
+        raise ParseError(f"could not parse matrix file {filename}: {exc}") from exc
+
+
+def meme(filename: str | os.PathLike[str]) -> list[tuple[str, list[list[float]]]]:
+    """Read DNA MEME text matrices as counts (probabilities times nsites).
+
+    Missing nsites defaults to 20. File background and strand declarations do
+    not override the caller's conversion background or scanning options.
+    """
+    try:
+        return _formats.meme(filename)
+    except ValueError as exc:
+        raise ParseError(str(exc)) from exc
+
+
+def transfac(filename: str | os.PathLike[str]) -> list[tuple[str, list[list[float]]]]:
+    """Read TRANSFAC DNA counts; names combine AC and ID where available."""
+    try:
+        return _formats.transfac(filename)
+    except ValueError as exc:
+        raise ParseError(str(exc)) from exc
+
+
+def jaspar(filename: str | os.PathLike[str]) -> list[tuple[str, list[list[float]]]]:
+    """Read a single- or multi-motif JASPAR count collection.
+
+    Each record starts with ``>ID TF_NAME`` and has four A/C/G/T rows.
+    Both labelled bracketed rows and unlabelled numeric PFM rows are accepted.
+    Names join header fields with ``_`` (for example ``MA0139.1_CTCF``).
+    Counts must be finite and non-negative. Gzip files are supported.
+    """
+    result: list[tuple[str, list[list[float]]]] = []
+    name: str | None = None
+    rows: list[list[float]] = []
+    labels: list[str] = []
+
+    def finish() -> None:
+        if name is None:
+            return
+        if len(rows) != 4 or not rows[0] or any(len(r) != len(rows[0]) for r in rows):
+            raise ParseError(f"{filename}: {name}: expected four equal-length, nonempty rows")
+        if labels and labels != list("ACGT"):
+            raise ParseError(f"{filename}: {name}: labelled rows must be A, C, G, T in order")
+        if any(not math.isfinite(v) or v < 0 for row in rows for v in row):
+            raise ParseError(f"{filename}: {name}: counts must be finite and non-negative")
+        if any(existing == name for existing, _ in result):
+            raise ParseError(f"{filename}: duplicate motif name {name!r}")
+        result.append((name, rows.copy()))
+
+    with open_text(filename) as handle:
+        for line_number, line in enumerate(handle, 1):
+            line = line.strip().lstrip("\ufeff")
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith(">"):
+                finish()
+                name = "_".join(line[1:].split())
+                if not name:
+                    raise ParseError(f"{filename}:{line_number}: empty motif header")
+                rows, labels = [], []
+                continue
+            if name is None:
+                raise ParseError(f"{filename}:{line_number}: expected a >ID motif header")
+            labelled = re.fullmatch(r"([ACGT])\s*\[\s*(.*?)\s*\]", line)
+            if labelled:
+                labels.append(labelled.group(1))
+                line = labelled.group(2)
+            try:
+                rows.append([float(value) for value in line.split()])
+            except ValueError as exc:
+                raise ParseError(f"{filename}:{line_number}: invalid count row") from exc
+        finish()
+    if not result:
+        raise ParseError(f"{filename}: no JASPAR motifs found")
+    return result
 
 
 def read_table(filename: str | os.PathLike[str]) -> list[list[float]]:
@@ -46,8 +143,9 @@ def read_table(filename: str | os.PathLike[str]) -> list[list[float]]:
     """
     path = Path(as_path(filename))
     rows: list[list[float]] = []
-    with path.open("r", errors="replace") as handle:
+    with open_text(path) as handle:
         for line in handle:
+            line = line.lstrip("\ufeff")
             row: list[float] = []
             for token in line.split():
                 try:

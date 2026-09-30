@@ -11,6 +11,7 @@ p-value thresholds, higher-order models, and sequence variants.
 - [Run the quick start](quickstart.md) using the bundled tiny example files.
 - Use [scan](cli/scan.md) to find matches, [threshold](cli/threshold.md) to convert
   p-values to score cutoffs, or [info](cli/info.md) to inspect matrices.
+- Scan [ATAC-seq peaks with a reference genome and JASPAR](peaks.md).
 - Integrate a reusable scanner with the [Python guide](python.md) and
   [API reference](reference/api.md).
 

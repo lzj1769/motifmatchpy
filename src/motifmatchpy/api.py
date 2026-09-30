@@ -143,15 +143,21 @@ class Motif:
         log_odds: bool = True,
         alphabet_size: int = 4,
     ) -> Motif:
-        """Read a single ``.pfm`` or ``.adm`` file.
+        """Read one motif from an automatically detected motif file.
 
-        The format is taken from the file's suffix where possible and otherwise
-        detected by trying both. With ``log_odds=False`` the file is read as a
-        scoring matrix and used directly instead of being converted.
+        PFM, ADM, JASPAR, MEME text and TRANSFAC are supported. Multi-motif
+        collections require :func:`read_motifs`. With ``log_odds=False``, only
+        numeric score tables are accepted, without conversion.
         """
         path = Path(filename)
         if bg is None:
             bg = tools.flat_bg(alphabet_size)
+        collection = _read_collection(path, bg, pseudocount, log_base, log_odds, alphabet_size)
+        if collection is not None:
+            if len(collection) != 1:
+                raise ValueError(f"{path}: contains {len(collection)} motifs; use read_motifs()")
+            motif = collection[0]
+            return cls(name or motif.name, motif.matrix, alphabet_size)
         matrix = _read_matrix(
             path,
             bg=bg,
@@ -165,6 +171,21 @@ class Motif:
             matrix=matrix,
             alphabet_size=alphabet_size,
         )
+
+
+def _read_collection(path, bg, pseudocount, log_base, log_odds, alphabet_size):
+    format_name = parsers.detect_format(path)
+    if format_name == "numeric":
+        return None
+    if not log_odds:
+        raise ValueError(f"{path}: {format_name} contains counts/probabilities; use -m, not -S")
+    if alphabet_size != 4:
+        raise ValueError(f"{path}: {format_name} collections require the DNA alphabet")
+    background = tools.flat_bg(4) if bg is None else bg
+    return [
+        Motif(name, tools.log_odds(matrix, background, pseudocount, log_base))
+        for name, matrix in getattr(parsers, format_name)(path)
+    ]
 
 
 def _read_matrix(
@@ -233,14 +254,28 @@ def read_motifs(
     alphabet_size: int = 4,
     names: Sequence[str] | None = None,
 ) -> list[Motif]:
-    """Read several matrix files into :class:`Motif` objects."""
+    """Auto-detect and read motif files, expanding multi-motif collections.
+
+    ``names`` retains one name per file and is only valid for single-motif files.
+    """
     filenames = list(filenames)
     if names is not None and len(names) != len(filenames):
         raise ValueError(
             f"got {len(filenames)} files but {len(names)} names"
         )
-    return [
-        Motif.from_file(
+    result = []
+    for i, filename in enumerate(filenames):
+        collection = _read_collection(
+            filename, bg, pseudocount, log_base, log_odds, alphabet_size
+        )
+        if collection is not None:
+            if names is not None:
+                if len(collection) != 1:
+                    raise ValueError("names requires one motif per file")
+                collection = [Motif(names[i], collection[0].matrix, alphabet_size)]
+            result.extend(collection)
+            continue
+        result.append(Motif.from_file(
             filename,
             name=None if names is None else names[i],
             bg=bg,
@@ -248,9 +283,8 @@ def read_motifs(
             log_base=log_base,
             log_odds=log_odds,
             alphabet_size=alphabet_size,
-        )
-        for i, filename in enumerate(filenames)
-    ]
+        ))
+    return result
 
 
 @dataclass(frozen=True, slots=True)

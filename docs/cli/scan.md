@@ -2,6 +2,9 @@
 
 Find motif occurrences in one or more FASTA or plain-text files, including gzip
 input. Select **exactly one** cutoff: `-p`, `-t`, or `-B`.
+Alternatively, provide `--regions BED --genome FASTA` to scan genomic intervals;
+this defaults to BED output and `-p 1e-4`. See the
+[ATAC-seq peak workflow](../peaks.md) for a full JASPAR example.
 
 ```sh
 motifmatchpy scan -S docs/examples/toy.scores -s docs/examples/toy.fa \
@@ -17,7 +20,8 @@ In addition to the [shared matrix/output options](index.md):
 
 | Option | Behavior |
 | --- | --- |
-| `-s`, `--sequences FILE ...` | Required sequence files; records are processed individually |
+| `-s`, `--sequences FILE ...` | Sequence files; mutually exclusive with peak mode |
+| `--regions BED` / `--genome FASTA` | Peak intervals and reference genome; provide both |
 | `-p`, `--p-value P` | Derive a score cutoff; `0 < P <= 1` |
 | `-t`, `--threshold T` | Report scores at least T, using the matrix's score units |
 | `-B`, `--best-hits N` | Search for approximately N matches per motif and strand, per record |
@@ -42,7 +46,8 @@ motifmatchpy scan -m docs/examples/toy.pfm -s docs/examples/toy.fa \
 
 This converts counts to natural-log scores, uses a uniform background for both
 conversion and threshold calculation, and writes three ordinary matches.
-Without `--batch`, sequence composition changes the threshold for each record.
+In `-s` mode without `--batch`, sequence composition changes the threshold for
+each record. Peak mode always uses the fixed `--bg`.
 
 ## BED output and forward strand only
 
@@ -78,6 +83,9 @@ For variant analysis, use `-p` or `-t`, or the low-level
 [variant API](../advanced.md#explicit-variants).
 
 ## Output columns
+
+In peak mode, positions include the peak start offset and refer to the reference
+genome. In `-s` mode they are relative to the individual sequence record.
 
 CSV/TSV columns, in order: `sequence`, `motif`, `pos`, `strand`, `score`,
 `match`, `variant_match`. The last field is empty for ordinary hits. The matched

@@ -30,8 +30,8 @@ best-hits does not chain into SNP scanning; use a fixed cutoff for variants.
 ## Different results between CLI and Python
 
 Align the matrix conversion background, threshold background, pseudocount,
-logarithm base, p-value precision, strands, and IUPAC behavior. CLI p-value scans
-estimate background per record by default; Python uses a fixed uniform
+logarithm base, p-value precision, strands, and IUPAC behavior. CLI `-s` p-value scans
+estimate background per record by default; peak scans use a fixed background; Python uses a fixed uniform
 background. CLI cutoff scans include IUPAC alternatives by default; Python's
 `scan()` requires `include_variants=True`.
 
@@ -49,8 +49,10 @@ when appropriate.
 
 ## Matrix parsing errors
 
-PFM input must have four numeric rows for DNA. Row labels and brackets are not
-supported. ADM input needs 16 conditional rows plus four nonempty initial-term
+`-m` detects numeric PFM/ADM and JASPAR/MEME/TRANSFAC collections by content.
+Numeric PFM tables need four rows for DNA; labelled JASPAR rows need a motif
+header. MEME requires a DNA probability matrix; TRANSFAC requires a P0/PO header
+and record terminators. ADM input needs 16 conditional rows plus four nonempty initial-term
 rows. Higher-order numeric score matrices should be constructed through the
 Python API rather than treated as ordinary PFM files.
 
