@@ -2,6 +2,9 @@
 
 [![CI](https://github.com/lzj1769/motifmatchpy/actions/workflows/ci.yml/badge.svg)](https://github.com/lzj1769/motifmatchpy/actions/workflows/ci.yml)
 
+[Documentation](https://lzj1769.github.io/motifmatchpy/) ·
+[Quick start](docs/quickstart.md) · [CLI guide](docs/cli/index.md)
+
 Position weight matrix matching for DNA: a pure-Python port of
 [MOODS](https://github.com/jhkorhonen/MOODS), with the inner loops compiled by
 [numba](https://numba.pydata.org/).
@@ -11,8 +14,9 @@ against megabases of sequence in well under a second — and handles first- and
 higher-order models, custom alphabets, p-value thresholds, and the matches that
 only appear once sequence variants are applied.
 
-Results are **identical to the original C++ implementation, bit for bit**. The
-test suite checks that against a build of it kept in `reference/`.
+The test suite checks numerical agreement with the patched MOODS C++ reference
+in `reference/`. Known corrections to upstream behavior are documented in
+[the compatibility guide](docs/compatibility.md).
 
 ## Install
 

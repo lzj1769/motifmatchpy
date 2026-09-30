@@ -1,0 +1,50 @@
+site_name: motifmatchpy
+site_description: DNA motif matching with Python and Numba
+site_url: https://lzj1769.github.io/motifmatchpy/
+repo_url: https://github.com/lzj1769/motifmatchpy
+repo_name: lzj1769/motifmatchpy
+edit_uri: edit/main/docs/
+docs_dir: docs
+site_dir: site
+strict: true
+theme:
+  name: readthedocs
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_root_heading: true
+            show_source: false
+            members_order: source
+            separate_signature: true
+            show_signature_annotations: true
+            merge_init_into_class: true
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+nav:
+  - Overview: index.md
+  - Installation: installation.md
+  - Quick start: quickstart.md
+  - Command line:
+      - Common options: cli/index.md
+      - scan: cli/scan.md
+      - threshold: cli/threshold.md
+      - info: cli/info.md
+  - Python guide: python.md
+  - File formats and coordinates: formats.md
+  - Advanced models: advanced.md
+  - API reference:
+      - High-level API: reference/api.md
+      - Scanning: reference/scan.md
+      - Matrix utilities: reference/tools.md
+      - Parsers: reference/parsers.md
+      - Sequence I/O: reference/io.md
+      - Low-level helpers: reference/misc.md
+      - Result types: reference/types.md
+  - Compatibility and troubleshooting: compatibility.md
+  - Contributing and publishing docs: development.md

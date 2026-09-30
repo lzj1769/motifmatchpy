@@ -1,0 +1,97 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "src/motifmatchpy/**"
+      - "scripts/check_docs_examples.py"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "src/motifmatchpy/**"
+      - "scripts/check_docs_examples.py"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and verify documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            docs/requirements.txt
+            pyproject.toml
+      - name: Install documentation and runtime dependencies
+        run: python -m pip install -r docs/requirements.txt .
+      - name: Verify documented examples
+        run: python scripts/check_docs_examples.py
+      - name: Build with warnings treated as errors
+        run: python -m mkdocs build --strict
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation-site
+          path: site/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Publish gh-pages and GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: documentation-site
+          path: site
+      - name: Publish the built site to gh-pages
+        run: |
+          python -m pip install ghp-import==2.1.0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          ghp-import -n -p -b gh-pages -m "Deploy documentation for ${GITHUB_SHA}" site
+      # GITHUB_TOKEN branch pushes do not trigger a Pages build. Deploy the
+      # same artifact explicitly; repository Settings > Pages must use Actions.
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
