@@ -19,6 +19,17 @@ def as_pairs(matches, ndigits=9):
     return sorted((m.pos, round(m.score, ndigits)) for m in matches)
 
 
+@pytest.mark.parametrize("seq, expected", [
+    ("ACGT", [(0, 1.0), (1, 0.0), (2, 0.0)]),
+    ("", []), ("A", []), ("NNNN", []),
+])
+@pytest.mark.parametrize("iterations", [0, 1, 10])
+def test_best_hits_target_exceeds_available_positions(seq, expected, iterations):
+    matrix = [[1.0, 2.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
+    found = scan.scan_best_hits_dna(seq, [matrix], 100, iterations=iterations)
+    assert [as_pairs(group) for group in found] == [expected]
+
+
 def rounded(pairs, ndigits=9):
     return sorted((pos, round(score, ndigits)) for pos, score in pairs)
 

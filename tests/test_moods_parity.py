@@ -46,6 +46,21 @@ def flat(matrix):
     return [float(v) for row in matrix for v in row]
 
 
+@pytest.mark.parametrize("order", [0, 2, 3])
+@pytest.mark.parametrize("bg", BACKGROUNDS)
+@pytest.mark.parametrize("log_base", [None, 2.0])
+def test_variable_length_lower_terms(order, bg, log_base, rng):
+    counts = [[float(rng.randint(1, 30)) for _ in range(3)]
+              for _ in range(4 ** (order + 1))]
+    low = [[float(rng.randint(1, 30)) for _ in range(4 ** (r + 1))]
+           for r in range(order)]
+    args = (counts, low, bg, 0.01, 4)
+    theirs = moods.tools.log_odds(*args) if log_base is None else (
+        moods.tools.log_odds(*args, log_base)
+    )
+    assert tools.log_odds_high_order(*args, log_base) == theirs
+
+
 # ------------------------------------------------------------------- tools
 @pytest.mark.parametrize("alphabet_size", [1, 2, 4, 5, 20])
 def test_flat_bg(alphabet_size):

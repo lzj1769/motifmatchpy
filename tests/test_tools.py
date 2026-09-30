@@ -88,6 +88,29 @@ def test_log_odds_high_order_dispatches_like_moods(adm_file, flat4):
     assert len(via_overload) == 16
 
 
+@pytest.mark.parametrize("log_base", [None, 2.0])
+def test_high_order_zero_order_accepts_empty_lower_terms(flat4, log_base):
+    counts = [[1.0, 2.0], [3.0, 4.0], [5.0, 6.0], [7.0, 8.0]]
+    assert tools.log_odds_high_order(counts, [], flat4, 0.01, 4, log_base) == (
+        tools.log_odds(counts, flat4, 0.01, log_base)
+    )
+
+
+@pytest.mark.parametrize("low", [[], [[1.0] * 4], [[1.0] * 4, [1.0] * 15]])
+def test_high_order_rejects_missing_lower_terms(flat4, low):
+    with pytest.raises(ValueError, match="low_order_terms"):
+        tools.log_odds_high_order([[1.0]] * 64, low, flat4, 0.01, 4)
+
+
+def test_high_order_accepts_padded_lower_terms(flat4):
+    counts = [[float(i + 1)] for i in range(64)]
+    low = [[1.0, 2.0, 3.0, 4.0], [float(i + 1) for i in range(16)]]
+    padded = [low[0] + [99.0] * 12, low[1]]
+    assert tools.log_odds_high_order(counts, low, flat4, 0.01, 4) == (
+        tools.log_odds_high_order(counts, padded, flat4, 0.01, 4)
+    )
+
+
 def test_reverse_complement_matches_reference(pfm_file, flat4):
     matrix = parsers.pfm_to_log_odds(pfm_file, flat4)
     reference.assert_matrix_close(

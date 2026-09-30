@@ -157,14 +157,21 @@ def log_odds_high_order(
     The first columns of the motif have no full context, so ``low_order_terms``
     supplies the shorter conditionals for them; those are folded into column 0,
     which is why a high-order matrix spans ``columns + q - 1`` positions.
+    Row ``r`` supplies ``a ** (r + 1)`` terms, so the rows can have different
+    lengths. A zero-order matrix needs no lower-order terms.
     """
     conditional = _as_array(mat)
     rows, cols = conditional.shape
-    low = _as_array(low_order_terms)
+    low = list(low_order_terms)
     bg_arr = np.array(check_bg(bg, a))
     ps = float(ps)
 
     q = misc.q_gram_size(rows, a)
+    if len(low) < q - 1:
+        raise ValueError(
+            f"low_order_terms needs {q - 1} rows for a {q}-gram matrix, "
+            f"got {len(low)}"
+        )
     shift = misc.shift(a)
     context_count = 1 << (shift * (q - 1))
 
@@ -178,13 +185,14 @@ def log_odds_high_order(
     # Lower-order terms for the leading positions, each added to column 0 of
     # every row whose q-gram starts with the corresponding prefix.
     for r in range(q - 1):
-        if r >= low.shape[0]:
-            raise ValueError(
-                f"low_order_terms needs {q - 1} rows for a {q}-gram matrix, "
-                f"got {low.shape[0]}"
-            )
         prefix_count = 1 << (shift * r)
-        terms = low[r][: prefix_count * a].reshape(prefix_count, a) + ps * bg_arr
+        required = prefix_count * a
+        row = np.asarray(low[r], dtype=np.float64)
+        if row.ndim != 1 or row.size < required:
+            raise ValueError(
+                f"low_order_terms row {r} needs at least {required} values"
+            )
+        terms = row[:required].reshape(prefix_count, a) + ps * bg_arr
         lo = _log(terms / terms.sum(axis=1, keepdims=True)) - _log(bg_arr)
         # Each (prefix, symbol) pair fixes the top bits of the row index; every
         # row sharing those bits gets the same lower-order contribution.

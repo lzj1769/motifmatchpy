@@ -525,8 +525,16 @@ def scan_best_hits_dna(
 
     for i in range(n):
         if not settled[i]:
-            current[i] = tools.threshold_from_p(matrices[i], bg, guess_p, a=4)
             lower[i] = tools.min_score(matrices[i], 4) - 1.0
+            # MOODS allows its internal guess to exceed 1 when the requested
+            # count is large relative to the sequence. The whole probability
+            # distribution then fits below the guess, giving this lower bound.
+            # Keep the public p-value validation strict and handle that search
+            # state here instead of passing an invalid probability to it.
+            current[i] = (
+                lower[i] if guess_p > 1
+                else tools.threshold_from_p(matrices[i], bg, guess_p, a=4)
+            )
 
     iteration = 0
     while remaining > 0:
