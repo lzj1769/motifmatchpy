@@ -40,5 +40,5 @@ The project includes the upstream GPLv3 and Biopython license texts in the
 [repository](https://github.com/lzj1769/motifmatchpy). When describing the
 underlying algorithms, cite Korhonen et al.,
 [Fast motif matching revisited: high-order PWMs, SNPs and indels](https://doi.org/10.1093/bioinformatics/btw683),
-*Bioinformatics* (2017). A separate motifmatchpy paper is not yet available;
-record the package version and repository URL in reproducible analyses.
+*Bioinformatics* (2017). To cite motifmatchpy, record the package version and
+repository URL in your analysis methods.
